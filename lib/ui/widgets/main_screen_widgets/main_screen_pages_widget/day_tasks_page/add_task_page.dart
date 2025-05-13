@@ -87,11 +87,14 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           : 'Save Changes',
                     ),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white70,
-                      foregroundColor: Colors.black,
-                      minimumSize: const Size(double.infinity, 55),
+                      backgroundColor:
+                          _controller.text.isEmpty
+                              ? Colors.green.shade900
+                              : Colors.green,
+                      foregroundColor: Colors.white,
+                      minimumSize: const Size.fromHeight(50),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15),
+                        borderRadius: BorderRadius.circular(16),
                       ),
                     ),
                   ),
@@ -99,7 +102,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     const SizedBox(height: 20),
                     Text(
                       model.error!,
-                      style: const TextStyle(color: Colors.red),
+                      style: const TextStyle(color: Colors.white),
                     ),
                   ],
                 ],

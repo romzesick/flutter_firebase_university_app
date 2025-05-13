@@ -1,9 +1,13 @@
+import 'package:firebase_flutter_app/view_models/profile_view_models/ranks_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_flutter_app/domain/models/daily_reward_model.dart';
 import 'package:firebase_flutter_app/services/daily_reward_service.dart';
 
 class DailyRewardViewModel extends ChangeNotifier {
   final DailyRewardService _rewardService = DailyRewardService();
+  final RankViewModel _rankViewModel;
+
+  DailyRewardViewModel(this._rankViewModel);
 
   DailyRewardModel? _reward;
   String? _error;
@@ -58,6 +62,9 @@ class DailyRewardViewModel extends ChangeNotifier {
     try {
       await _rewardService.claimDailyReward();
       await loadRewardData();
+
+      /// Теперь мы можем обновить RankViewModel напрямую
+      await _rankViewModel.loadRanks();
     } catch (e) {
       _error = e.toString();
     }

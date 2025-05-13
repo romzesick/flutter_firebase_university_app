@@ -5,7 +5,8 @@ import 'package:firebase_flutter_app/ui/widgets/main_screen_widgets/main_screen_
 import 'package:firebase_flutter_app/ui/widgets/main_screen_widgets/main_screen_pages_widget/profile_page/friends/friends_progress_widget.dart';
 import 'package:firebase_flutter_app/ui/widgets/main_screen_widgets/main_screen_pages_widget/profile_page/settings_page/settings_page.dart';
 import 'package:firebase_flutter_app/ui/widgets/main_screen_widgets/main_screen_pages_widget/profile_page/view_rangs/view_rangs_widget.dart';
-import 'package:firebase_flutter_app/view_models/goals_view_models/goals_view_model.dart';
+import 'package:firebase_flutter_app/view_models/profile_view_models/friends_view_models/friends_ranking_view_model.dart';
+import 'package:firebase_flutter_app/view_models/profile_view_models/friends_view_models/friends_request_notifier_view_model.dart';
 import 'package:firebase_flutter_app/view_models/profile_view_models/main_info_view_model.dart';
 import 'package:firebase_flutter_app/view_models/profile_view_models/ranks_view_model.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +16,15 @@ class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   static Widget create() {
-    return ChangeNotifierProvider(
-      create: (_) => ProfileViewModel()..loadProfileData(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => ProfileViewModel()..loadProfileData(),
+        ),
+        ChangeNotifierProvider(create: (_) => FriendsRankingViewModel()),
+        ChangeNotifierProvider(create: (_) => FriendRequestsNotifier()),
+        ChangeNotifierProvider(create: (_) => RankViewModel()..loadRanks()),
+      ],
       child: const ProfilePage(),
     );
   }
@@ -31,10 +39,7 @@ class ProfilePage extends StatelessWidget {
           SizedBox(height: 20),
           FriendsProgressWidget(),
           SizedBox(height: 20),
-          ChangeNotifierProvider(
-            create: (_) => RankViewModel()..loadRanks(),
-            child: _ScoreWidget(),
-          ),
+          _ScoreWidget(),
           SizedBox(height: 20),
           _DailyRewardWidget(),
           SizedBox(height: 20),
@@ -123,9 +128,6 @@ class _GoalsAchieved extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final model = context.read<GoalsViewModel>();
-
-    final achievedGoals = model.goals.where((g) => g.completed).toList();
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -150,13 +152,6 @@ class _GoalsAchieved extends StatelessWidget {
                 ),
               ),
               SizedBox(width: 10),
-              Text(
-                '${achievedGoals.length}',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
               Icon(Icons.chevron_right, color: Colors.white),
             ],
           ),
@@ -202,13 +197,14 @@ class _DailyRewardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final rankViewModel = context.read<RankViewModel>();
     return GestureDetector(
       onTap: () {
         showModalBottomSheet(
           context: context,
           backgroundColor: Colors.transparent,
           isScrollControlled: true,
-          builder: (_) => const DailyRewardPopup(),
+          builder: (_) => DailyRewardPopup(rankViewModel: rankViewModel),
         );
       },
       child: Container(
@@ -253,72 +249,81 @@ class _ScoreWidget extends StatelessWidget {
     final rankName = rankModel.userRank?.name ?? 'Unranked';
     final totalPoints = rankModel.userPoints ?? 0;
 
-    return Stack(
-      children: [
-        Container(
-          height: 150,
-          decoration: BoxDecoration(
-            color: Colors.grey[900],
-            borderRadius: BorderRadius.circular(10),
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(10),
+      child: Stack(
+        children: [
+          // Background Image
+          Positioned.fill(
+            child: Opacity(
+              opacity: 0.3,
+              child: Image.asset('images/road.jpg', fit: BoxFit.cover),
+            ),
           ),
-        ),
-        const Positioned(
-          left: 10,
-          top: 10,
-          child: Text('Your Score', style: TextStyle(color: Colors.white)),
-        ),
-        Positioned(
-          right: 10,
-          top: 10,
-          child: Row(
-            children: [
-              Text(
-                '$totalPoints 🎯',
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
+          // Overlay
+          Container(
+            height: 150,
+            decoration: BoxDecoration(
+              color: Colors.transparent,
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          const Positioned(
+            left: 10,
+            top: 10,
+            child: Text('Your Score', style: TextStyle(color: Colors.white)),
+          ),
+          Positioned(
+            right: 10,
+            top: 10,
+            child: Row(
+              children: [
+                Text(
+                  '$totalPoints 🎯',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ),
-        Positioned(
-          left: 10,
-          bottom: 10,
-          child: Text(
-            rankName,
-            style: const TextStyle(
-              color: Colors.blue,
-              fontWeight: FontWeight.bold,
-              fontSize: 30,
+              ],
             ),
           ),
-        ),
-        Positioned(
-          right: 10,
-          bottom: 10,
-          child: ElevatedButton(
-            style: const ButtonStyle(
-              backgroundColor: WidgetStatePropertyAll(
-                Color.fromARGB(255, 43, 41, 41),
+          Positioned(
+            left: 10,
+            bottom: 10,
+            child: Text(
+              rankName,
+              style: const TextStyle(
+                color: Colors.blue,
+                fontWeight: FontWeight.bold,
+                fontSize: 30,
               ),
             ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ViewRangsWidget.create(),
-                ),
-              );
-            },
-            child: const Text(
-              'View rangs',
-              style: TextStyle(color: Colors.white),
+          ),
+          Positioned(
+            right: 10,
+            bottom: 10,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color.fromARGB(255, 43, 41, 41),
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ViewRangsWidget.create(),
+                  ),
+                );
+              },
+              child: const Text(
+                'View ranks',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

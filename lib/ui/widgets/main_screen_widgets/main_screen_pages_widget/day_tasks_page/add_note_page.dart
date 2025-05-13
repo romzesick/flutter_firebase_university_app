@@ -32,9 +32,12 @@ class _AddNotePageState extends State<AddNotePage>
     _controller.addListener(_onNoteChanged);
 
     // Показываем клавиатуру немного позже, когда страница отрисуется
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Future.delayed(const Duration(milliseconds: 100));
-      FocusScope.of(context).requestFocus(_focusNode);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(const Duration(milliseconds: 300), () {
+        if (mounted) {
+          FocusScope.of(context).requestFocus(_focusNode);
+        }
+      });
     });
   }
 
@@ -97,14 +100,14 @@ class _AddNotePageState extends State<AddNotePage>
                       hintText: 'Write your note...',
                       hintStyle: const TextStyle(color: Colors.white60),
                       filled: true,
-                      fillColor: Colors.grey[850],
+                      fillColor: Colors.grey[900],
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
+                        borderRadius: BorderRadius.circular(15),
                         borderSide: BorderSide.none,
                       ),
                       contentPadding: const EdgeInsets.symmetric(
-                        vertical: 20,
-                        horizontal: 20,
+                        vertical: 15,
+                        horizontal: 15,
                       ),
                     ),
                   ),

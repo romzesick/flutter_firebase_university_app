@@ -1,16 +1,19 @@
 import 'package:firebase_flutter_app/view_models/profile_view_models/daily_rewar_view_model.dart';
+import 'package:firebase_flutter_app/view_models/profile_view_models/ranks_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class DailyRewardPopup extends StatelessWidget {
-  const DailyRewardPopup({super.key});
+  final RankViewModel rankViewModel;
+
+  const DailyRewardPopup({super.key, required this.rankViewModel});
 
   static final List<int> rewards = [10, 20, 40, 60, 80, 110, 150];
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => DailyRewardViewModel()..loadRewardData(),
+      create: (_) => DailyRewardViewModel(rankViewModel)..loadRewardData(),
       child: const _RewardContent(),
     );
   }

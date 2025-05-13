@@ -59,7 +59,11 @@ class _GoalsPageWidgetState extends State<GoalsPageWidget> {
         child: AnimatedSwitcher(
           duration: const Duration(milliseconds: 400),
           child:
-              visibleGoals.isEmpty
+              model.isLoading
+                  ? const Center(
+                    child: CircularProgressIndicator(color: Colors.white),
+                  )
+                  : visibleGoals.isEmpty
                   ? _buildEmptyContent()
                   : ListView.builder(
                     key: ValueKey(visibleGoals.length),

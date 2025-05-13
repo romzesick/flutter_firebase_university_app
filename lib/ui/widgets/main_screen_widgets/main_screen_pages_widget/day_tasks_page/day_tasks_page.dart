@@ -221,11 +221,14 @@ class _AddNoteButtonWidget extends StatelessWidget {
     final hasNote = note != null && note.trim().isNotEmpty;
 
     return ElevatedButton(
-      onPressed: () {
-        Navigator.push(
+      onPressed: () async {
+        await Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => AddNotePage.create(selectedDate)),
         );
+
+        /// После возврата обновляем состояние
+        await context.read<DayTasksViewModel>().loadDay(selectedDate);
       },
       style: ElevatedButton.styleFrom(
         shape: const CircleBorder(),

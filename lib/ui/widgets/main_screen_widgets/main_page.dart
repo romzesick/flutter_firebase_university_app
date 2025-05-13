@@ -39,14 +39,14 @@ class _MainPageState extends State<MainPage> {
 
   // pages to display
   final List<Widget> _pages = [
-    // profile page
-    ProfilePage.create(),
-
     // tasks page
     MainTasksPage.create(),
 
     // goals page
     GoalsPageWidget(),
+
+    // profile page
+    ProfilePage.create(),
 
     // setting page
     const SettingPage(),
