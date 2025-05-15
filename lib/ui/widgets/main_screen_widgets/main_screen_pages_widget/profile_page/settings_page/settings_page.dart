@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_flutter_app/ui/widgets/auth_widgets/auth_wrapper_widget.dart';
+import 'package:firebase_flutter_app/ui/widgets/main_screen_widgets/main_screen_pages_widget/profile_page/settings_page/about_page.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPageWidget extends StatefulWidget {
@@ -35,6 +37,36 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
     }
   }
 
+  bool _notificationsEnabled = true;
+
+  Future<void> _toggleNotifications(bool value) async {
+    setState(() => _notificationsEnabled = value);
+
+    if (value) {
+      final settings = await FirebaseMessaging.instance.requestPermission();
+      final granted =
+          settings.authorizationStatus == AuthorizationStatus.authorized;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            granted ? '🔔 Уведомления включены' : '⚠️ Разрешение не получено',
+          ),
+          backgroundColor: granted ? Colors.green : Colors.orange,
+        ),
+      );
+    } else {
+      // Просто отключаем получение уведомлений
+      await FirebaseMessaging.instance.setAutoInitEnabled(false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('🔕 Уведомления отключены'),
+          backgroundColor: Colors.redAccent,
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,28 +82,22 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
           children: [
             SettingsItemsWidget(
               function: () {},
-              widget: Switch(value: true, onChanged: (bool value) {}),
-              text: 'Light Mode',
+              widget: Switch(
+                activeColor: Colors.grey,
+                value: _notificationsEnabled,
+                onChanged: _toggleNotifications,
+              ),
+              text: 'Notifications',
             ),
             SettingsItemsWidget(
-              function: () {},
+              function: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AboutPage()),
+                );
+              },
               widget: Icon(Icons.info, color: Colors.white),
               text: 'About App',
-            ),
-            SettingsItemsWidget(
-              function: () {},
-              widget: Icon(Icons.chevron_right_outlined, color: Colors.white),
-              text: 'Privacy Policy',
-            ),
-            SettingsItemsWidget(
-              function: () => Navigator.pop(context),
-              widget: Icon(Icons.chevron_right_outlined, color: Colors.white),
-              text: 'Terms and Conditions',
-            ),
-            SettingsItemsWidget(
-              function: () {},
-              widget: Icon(Icons.settings, color: Colors.white),
-              text: 'Notifications',
             ),
             SettingsItemsWidget(
               function: _logUserOut,

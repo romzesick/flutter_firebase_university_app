@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 
 import '../../components/my_bottom_nav_bar.dart';
 import 'main_screen_pages_widget/profile_page/profile_page.dart';
-import 'main_screen_pages_widget/third_page/setting_page.dart';
 
 /*
 
@@ -47,9 +46,6 @@ class _MainPageState extends State<MainPage> {
 
     // profile page
     ProfilePage.create(),
-
-    // setting page
-    const SettingPage(),
   ];
 
   @override

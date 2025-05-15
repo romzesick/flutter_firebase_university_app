@@ -31,9 +31,8 @@ class MyBottomNavBar extends StatelessWidget {
         gap: 8,
         onTabChange: (value) => onTabChange!(value),
         tabs: const [
-          GButton(icon: Icons.home, text: 'Home'),
-          GButton(icon: Icons.shopping_bag_rounded, text: 'Goals'),
-          GButton(icon: Icons.settings, text: 'Settings'),
+          GButton(icon: Icons.task_alt_outlined, text: 'Daily Tasks'),
+          GButton(icon: Icons.task, text: 'Long-term Goals'),
           GButton(icon: Icons.person, text: 'Profile'),
         ],
       ),
