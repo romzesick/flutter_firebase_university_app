@@ -1,4 +1,9 @@
-# firebase_flutter_app
+# Productivity Tracker App
+
+
+<img src="https://img.shields.io/badge/Flutter-3.19-blue?logo=flutter" />
+<img src="https://img.shields.io/badge/Firebase-integrated-yellow?logo=firebase" />
+<img src="https://img.shields.io/badge/State%20Management-Provider-green" />
 
 A new Flutter project.
 
