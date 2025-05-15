@@ -60,9 +60,7 @@ class DailyRewardService {
           now.difference(DateTime(last.year, last.month, last.day)).inDays;
 
       final nextStreak =
-          daysGap == 1
-              ? reward.currentStreak + 1
-              : 2; // сброшен -> снова второй
+          daysGap == 1 ? reward.currentStreak + 1 : 2; // сброшен и снова второй
       final dayInCycle = ((nextStreak - 2) % 7) + 1;
 
       reward = DailyRewardModel(

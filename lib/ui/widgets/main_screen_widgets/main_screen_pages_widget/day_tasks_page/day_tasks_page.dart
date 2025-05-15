@@ -2,6 +2,7 @@ import 'package:firebase_flutter_app/domain/models/task_model.dart';
 import 'package:firebase_flutter_app/ui/components/radial_progress_bar/progres_bar.dart';
 import 'package:firebase_flutter_app/ui/widgets/main_screen_widgets/main_screen_pages_widget/day_tasks_page/add_note_page.dart';
 import 'package:firebase_flutter_app/ui/widgets/main_screen_widgets/main_screen_pages_widget/day_tasks_page/add_task_page.dart';
+import 'package:firebase_flutter_app/ui/widgets/main_screen_widgets/main_screen_pages_widget/profile_page/statistics_page/statistics_page.dart';
 import 'package:firebase_flutter_app/view_models/tasks_view_models/add_tasks_view_model.dart';
 import 'package:firebase_flutter_app/view_models/tasks_view_models/task_view_model.dart';
 import 'package:flutter/material.dart';
@@ -117,7 +118,17 @@ class _DateWidget extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
           ),
-          const Icon(Icons.menu, color: Colors.white),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProductivityStatsPage.create(),
+                ),
+              );
+            },
+            icon: Icon(Icons.bar_chart, color: Colors.white),
+          ),
         ],
       ),
     );
