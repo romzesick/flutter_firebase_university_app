@@ -1,21 +1,61 @@
-# Productivity Tracker App
+# 📱 Productivity Tracker App
 
+![Flutter](https://img.shields.io/badge/Flutter-3.19-blue?logo=flutter)
+![Firebase](https://img.shields.io/badge/Firebase-integrated-yellow?logo=firebase)
+![Provider](https://img.shields.io/badge/State%20Management-Provider-green)
 
-<img src="https://img.shields.io/badge/Flutter-3.19-blue?logo=flutter" />
-<img src="https://img.shields.io/badge/Firebase-integrated-yellow?logo=firebase" />
-<img src="https://img.shields.io/badge/State%20Management-Provider-green" />
+A sleek, feature-rich productivity tracking application built with Flutter and powered by Firebase. Users can create daily and global goals, track their task completion progress, earn achievements, view statistics, and stay motivated.
 
-A new Flutter project.
+---
 
-## Getting Started
+## 🚀 Features
 
-This project is a starting point for a Flutter application.
+* 📆 Daily Tasks: Add, complete, delete, and transfer tasks between days. Add your notes to the days
+* 📅 Interactive Calendar: Swipe and tap to manage your productivity easily
+* 📊 Stats Page: Visualize daily/weekly/monthly productivity with dynamic charts
+* 🧠 Global Goals: Define long-term objectives broken into steps
+* 🏆 Achievements & Points: Earn rewards for consistency and performance to upgrade your rank
+* 🔔 Push Notifications: Get reminders to stay on track
+* 👥 Friends System: Add friends, view their progress, and compete in rankings
 
-A few resources to get you started if this is your first Flutter project:
+---
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🛠 Tech Stack
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* Dart: Programming language
+* Flutter: UI development
+* Firebase Auth: Authentication
+* Cloud Firestore: Real-time data storage
+* Firebase Messaging: Push notifications
+* Provider: State management
+
+---
+
+## 📥 Installation
+
+```bash
+# Clone the repo
+git clone https://github.com/your_username/your_repo_name.git
+cd your_repo_name
+
+# Install dependencies
+flutter pub get
+
+# Run the app
+flutter run
+```
+
+Make sure you have Flutter set up: [Flutter Setup Guide](https://flutter.dev/docs/get-started/install)
+
+---
+
+## 🔐 Firebase Setup (if needed)
+
+If you fork the project and want to use Firebase:
+
+1. Create a new Firebase project
+2. Enable Email/Password authentication
+3. Add your `google-services.json` and `GoogleService-Info.plist` to the appropriate directories
+4. Use `flutterfire configure` if preferred
+
+---
