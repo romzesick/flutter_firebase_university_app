@@ -2,12 +2,13 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+/// Widżet pokazujący animowany okrąg postępu procentowego.
 class RadialPercentWidget extends StatelessWidget {
-  final Widget child;
-  final double percent;
-  final Color fillColor;
-  final Color freeColor;
-  final double lineWidth;
+  final Widget child; // Element w środku koła (np. tekst)
+  final double percent; // Wartość procentowa (0.0–1.0)
+  final Color fillColor; // Kolor tła (środek koła)
+  final Color freeColor; // Kolor niewypełnionej części łuku
+  final double lineWidth; // Grubość łuku
 
   const RadialPercentWidget({
     super.key,
@@ -30,6 +31,7 @@ class RadialPercentWidget extends StatelessWidget {
           return Stack(
             fit: StackFit.expand,
             children: [
+              // Tło i łuki
               CustomPaint(
                 painter: MyPainter(
                   percent: animatedPercent,
@@ -38,6 +40,7 @@ class RadialPercentWidget extends StatelessWidget {
                   lineWidth: lineWidth,
                 ),
               ),
+              // Środkowy element (np. tekst %)
               Padding(
                 padding: const EdgeInsets.all(11.0),
                 child: Center(child: childInside),
@@ -45,12 +48,13 @@ class RadialPercentWidget extends StatelessWidget {
             ],
           );
         },
-        child: child, // <-- чтобы текст не пересоздавался каждую миллисекунду
+        child: child, // <-- aby tekst się nie odświeżał przy każdej klatce
       ),
     );
   }
 }
 
+/// Klasa odpowiedzialna za rysowanie łuków i tła
 class MyPainter extends CustomPainter {
   final Color fillColor;
   final Color freeColor;
@@ -68,14 +72,14 @@ class MyPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final arcRect = calculateArcRects(size);
 
-    drawBackGround(canvas, size);
-    drawFreeArc(canvas, arcRect);
-    drawFillArc(canvas, arcRect);
+    drawBackGround(canvas, size); // Rysuje tło (wypełnienie)
+    drawFreeArc(canvas, arcRect); // Rysuje łuk niewypełniony
+    drawFillArc(canvas, arcRect); // Rysuje łuk wypełniony
   }
 
   void drawFillArc(Canvas canvas, Rect arcRect) {
     final paint = Paint();
-    paint.color = _calculateLineColor(); // <--- тут теперь меняем цвет
+    paint.color = _calculateLineColor(); // Dynamiczny kolor zależny od procenta
     paint.style = PaintingStyle.stroke;
     paint.strokeWidth = lineWidth;
     paint.strokeCap = StrokeCap.round;
@@ -114,7 +118,7 @@ class MyPainter extends CustomPainter {
   }
 
   Color _calculateLineColor() {
-    // Плавный переход от жёлтого (255, 255, 0) к светло-зелёному (76, 175, 80)
+    // Płynne przejście koloru od żółtego (255,255,0) do zielonego (76,175,80)
     final red = (255 * (1 - percent) + 76 * percent).toInt();
     final green = (255 * (1 - percent) + 175 * percent).toInt();
     final blue = (0 * (1 - percent) + 80 * percent).toInt();

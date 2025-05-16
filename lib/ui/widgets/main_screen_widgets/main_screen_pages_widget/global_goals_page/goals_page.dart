@@ -8,6 +8,8 @@ import 'package:firebase_flutter_app/ui/widgets/main_screen_widgets/main_screen_
 import 'package:firebase_flutter_app/ui/widgets/main_screen_widgets/main_screen_pages_widget/global_goals_page/edit_goal_page.dart';
 import 'package:firebase_flutter_app/ui/components/radial_progress_bar/progres_bar.dart';
 
+/// Strona prezentująca długoterminowe cele.
+/// Pozwala dodawać nowe cele, oznaczać kroki jako wykonane oraz przechodzić do edycji.
 class GoalsPageWidget extends StatefulWidget {
   const GoalsPageWidget({super.key});
 
@@ -21,17 +23,20 @@ class _GoalsPageWidgetState extends State<GoalsPageWidget> {
   @override
   void initState() {
     super.initState();
+    // Ładujemy cele po uruchomieniu widżetu
     Future.microtask(() {
       context.read<GoalsViewModel>().loadGoals();
     });
   }
 
+  /// Zaznacz/odznacz cel
   void _toggleGoalSelection(String goalId) {
     setState(() {
       selectedGoalId = selectedGoalId == goalId ? null : goalId;
     });
   }
 
+  /// Nawigacja do edycji zaznaczonego celu
   void _navigateToDetails() async {
     if (selectedGoalId != null) {
       await Navigator.push(
@@ -41,6 +46,7 @@ class _GoalsPageWidgetState extends State<GoalsPageWidget> {
         ),
       );
 
+      // Po powrocie odznaczamy cel
       setState(() {
         selectedGoalId = null;
       });
@@ -50,7 +56,6 @@ class _GoalsPageWidgetState extends State<GoalsPageWidget> {
   @override
   Widget build(BuildContext context) {
     final model = context.watch<GoalsViewModel>();
-
     final visibleGoals = model.goals.where((g) => !g.completed).toList();
 
     return Scaffold(
@@ -125,6 +130,8 @@ class _GoalsPageWidgetState extends State<GoalsPageWidget> {
                   ),
         ),
       ),
+
+      // FAB do dodania nowego celu lub edycji zaznaczonego
       floatingActionButton: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: FloatingActionButton(
@@ -147,6 +154,7 @@ class _GoalsPageWidgetState extends State<GoalsPageWidget> {
     );
   }
 
+  /// Widok pustej listy celów
   Widget _buildEmptyContent() {
     return Center(
       child: FadeSlideIn(
@@ -172,6 +180,7 @@ class _GoalsPageWidgetState extends State<GoalsPageWidget> {
   }
 }
 
+/// Wskaźnik postępu celu
 class _GoalProgressWidget extends StatelessWidget {
   final double percent;
   const _GoalProgressWidget({required this.percent});
@@ -195,6 +204,7 @@ class _GoalProgressWidget extends StatelessWidget {
   }
 }
 
+/// Tytuł celu
 class _GoalLabelWidget extends StatelessWidget {
   final String title;
   const _GoalLabelWidget({required this.title});
@@ -212,6 +222,7 @@ class _GoalLabelWidget extends StatelessWidget {
   }
 }
 
+/// Lista kroków przypisana do danego celu
 class _StepsToAchieveGoal extends StatelessWidget {
   final String goalId;
   final List<GoalStepModel> steps;
@@ -248,7 +259,10 @@ class _StepsToAchieveGoal extends StatelessWidget {
                       padding: const EdgeInsets.all(15),
                       child: Text(
                         step.text,
-                        style: TextStyle(color: Colors.white, fontSize: 15),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 15,
+                        ),
                       ),
                     ),
                   ),

@@ -9,9 +9,11 @@ import 'package:provider/provider.dart';
 import '../../components/my_login_button.dart';
 import '../../components/my_textfield.dart';
 
+/// Ekran logowania – formularz logowania, przyciski i obsługa błędów
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
+  /// Metoda fabryczna do stworzenia strony z odpowiednim ViewModel
   static Widget create() {
     return ChangeNotifierProvider(
       create: (context) => LoginViewModel(),
@@ -32,39 +34,43 @@ class LoginPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(height: 50),
+
+                    // Ikona logowania
                     Icon(Icons.login, size: 100, color: Colors.grey[900]),
                     const SizedBox(height: 50),
+
+                    // Powitanie użytkownika
                     Text(
                       'Welcome back you\'ve been missed!',
                       style: TextStyle(color: Colors.grey[700], fontSize: 16),
                     ),
                     const SizedBox(height: 25),
 
+                    // Pole email
                     _EmailField(),
-
                     const SizedBox(height: 10),
 
+                    // Pole hasło
                     _PasswordField(),
-
                     const SizedBox(height: 10),
 
+                    // Przycisk: Zapomniałem hasła
                     _ForgotPasswordButton(),
-
                     const SizedBox(height: 25),
 
-                    // sign in button
+                    // Przycisk logowania
                     const LoginButton(),
-
                     const SizedBox(height: 10),
 
+                    // Przycisk rejestracji
                     _RegisterNow(),
-
                     const SizedBox(height: 35),
 
+                    // Linia podziału
                     _OrContinueDivider(),
-
                     const SizedBox(height: 50),
 
+                    // Logowanie przez Google/Apple
                     const _SocialLoginRow(),
                   ],
                 ),
@@ -73,13 +79,14 @@ class LoginPage extends StatelessWidget {
           ),
         ),
 
-        // Секция для обработки ошибок
+        // Wyświetlanie błędów logowania
         _ErrorHandler(),
       ],
     );
   }
 }
 
+/// Pole tekstowe do wpisania e-maila
 class _EmailField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -91,6 +98,7 @@ class _EmailField extends StatelessWidget {
   }
 }
 
+/// Pole tekstowe do wpisania hasła
 class _PasswordField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -102,6 +110,7 @@ class _PasswordField extends StatelessWidget {
   }
 }
 
+/// Przycisk do przejścia na stronę odzyskiwania hasła
 class _ForgotPasswordButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -125,6 +134,7 @@ class _ForgotPasswordButton extends StatelessWidget {
   }
 }
 
+/// Przycisk logowania – pokazuje spinner podczas ładowania
 class LoginButton extends StatelessWidget {
   const LoginButton({super.key});
 
@@ -138,6 +148,7 @@ class LoginButton extends StatelessWidget {
     return MyButton(
       signInUp: 'Sign In',
       onTap: () async {
+        // Ukrycie klawiatury
         FocusScope.of(context).unfocus();
         await context.read<LoginViewModel>().onSignInButtonPressed();
       },
@@ -145,6 +156,7 @@ class LoginButton extends StatelessWidget {
   }
 }
 
+/// Sekcja z przyciskiem „Zarejestruj się”
 class _RegisterNow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -170,6 +182,7 @@ class _RegisterNow extends StatelessWidget {
   }
 }
 
+/// Separator z tekstem „Lub kontynuuj przez”
 class _OrContinueDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -189,6 +202,7 @@ class _OrContinueDivider extends StatelessWidget {
   }
 }
 
+/// Rząd przycisków logowania społecznościowego (Google i Apple)
 class _SocialLoginRow extends StatelessWidget {
   const _SocialLoginRow();
 
@@ -205,6 +219,7 @@ class _SocialLoginRow extends StatelessWidget {
   }
 }
 
+/// Komponent odpowiedzialny za wyświetlanie błędów logowania
 class _ErrorHandler extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -212,6 +227,7 @@ class _ErrorHandler extends StatelessWidget {
       builder: (_, model, __) {
         final message = model.state.errorMessage?.dataIfNotHandled;
         if (message != null) {
+          // Pokazanie SnackBar z błędem
           WidgetsBinding.instance.addPostFrameCallback((_) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(message), backgroundColor: Colors.red),

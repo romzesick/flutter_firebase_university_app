@@ -12,9 +12,13 @@ import 'package:firebase_flutter_app/view_models/profile_view_models/ranks_view_
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+// ProfilePage
+// Ekran profilu z widżetami dotyczącymi postępu, punktów, rankingu i codziennych nagród
+
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
+  // Tworzy stronę profilu z wymaganymi ViewModelami
   static Widget create() {
     return MultiProvider(
       providers: [
@@ -34,7 +38,7 @@ class ProfilePage extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
       child: ListView(
-        children: [
+        children: const [
           _PersonalInfoProgressWidgets(),
           SizedBox(height: 20),
           FriendsProgressWidget(),
@@ -56,6 +60,7 @@ class ProfilePage extends StatelessWidget {
   }
 }
 
+// Widżet wyświetlający dane osobowe, postęp roczny/miesięczny/dzienny oraz średnią produktywność
 class _PersonalInfoProgressWidgets extends StatelessWidget {
   const _PersonalInfoProgressWidgets();
 
@@ -100,7 +105,7 @@ class _PersonalInfoProgressWidgets extends StatelessWidget {
                 child: Text(
                   profile.isLoading
                       ? 'Loading...'
-                      : 'Welcome back, ${profile.userName}!',
+                      : 'Welcome back, ${profile.userName}!'.toUpperCase(),
                   style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -123,26 +128,26 @@ class _PersonalInfoProgressWidgets extends StatelessWidget {
   }
 }
 
+// Przycisk przekierowujący do osiągniętych celów
 class _GoalsAchieved extends StatelessWidget {
   const _GoalsAchieved();
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => GoalsAchievedWidget()),
-        );
-      },
+      onTap:
+          () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => GoalsAchievedWidget()),
+          ),
       child: Container(
         height: 60,
         decoration: BoxDecoration(
           color: Colors.grey[900],
           borderRadius: BorderRadius.circular(10),
         ),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+        child: const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10.0),
           child: Row(
             children: [
               Expanded(
@@ -161,6 +166,7 @@ class _GoalsAchieved extends StatelessWidget {
   }
 }
 
+// Przycisk otwierający ustawienia
 class _SettingsWidget extends StatelessWidget {
   const _SettingsWidget();
 
@@ -170,7 +176,7 @@ class _SettingsWidget extends StatelessWidget {
       onTap:
           () => Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => SettingsPageWidget()),
+            MaterialPageRoute(builder: (_) => SettingsPageWidget()),
           ),
       child: Container(
         height: 60,
@@ -179,7 +185,7 @@ class _SettingsWidget extends StatelessWidget {
           color: Colors.grey[900],
           borderRadius: BorderRadius.circular(10),
         ),
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('Settings', style: TextStyle(color: Colors.white)),
@@ -192,6 +198,7 @@ class _SettingsWidget extends StatelessWidget {
   }
 }
 
+// Przycisk otwierający popup z codzienną nagrodą
 class _DailyRewardWidget extends StatelessWidget {
   const _DailyRewardWidget();
 
@@ -199,23 +206,22 @@ class _DailyRewardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final rankViewModel = context.read<RankViewModel>();
     return GestureDetector(
-      onTap: () {
-        showModalBottomSheet(
-          context: context,
-          backgroundColor: Colors.transparent,
-          isScrollControlled: true,
-          builder: (_) => DailyRewardPopup(rankViewModel: rankViewModel),
-        );
-      },
+      onTap:
+          () => showModalBottomSheet(
+            context: context,
+            backgroundColor: Colors.transparent,
+            isScrollControlled: true,
+            builder: (_) => DailyRewardPopup(rankViewModel: rankViewModel),
+          ),
       child: Container(
         height: 60,
         decoration: BoxDecoration(
           color: Colors.grey[900],
           borderRadius: BorderRadius.circular(10),
         ),
-        child: Row(
+        child: const Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children: [
             Icon(Icons.calendar_month, color: Colors.white),
             SizedBox(width: 10),
             Text('Daily reward', style: TextStyle(color: Colors.white)),
@@ -226,6 +232,7 @@ class _DailyRewardWidget extends StatelessWidget {
   }
 }
 
+// Widżet z punktami, rangą i przyciskiem do listy rang
 class _ScoreWidget extends StatelessWidget {
   const _ScoreWidget();
 
@@ -253,14 +260,12 @@ class _ScoreWidget extends StatelessWidget {
       borderRadius: BorderRadius.circular(10),
       child: Stack(
         children: [
-          // Background Image
           Positioned.fill(
             child: Opacity(
               opacity: 0.3,
               child: Image.asset('images/road.jpg', fit: BoxFit.cover),
             ),
           ),
-          // Overlay
           Container(
             height: 150,
             decoration: BoxDecoration(
@@ -276,17 +281,13 @@ class _ScoreWidget extends StatelessWidget {
           Positioned(
             right: 10,
             top: 10,
-            child: Row(
-              children: [
-                Text(
-                  '$totalPoints 🎯',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
+            child: Text(
+              '$totalPoints 🎯',
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           Positioned(
@@ -308,14 +309,11 @@ class _ScoreWidget extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color.fromARGB(255, 43, 41, 41),
               ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ViewRangsWidget.create(),
+              onPressed:
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => ViewRangsWidget.create()),
                   ),
-                );
-              },
               child: const Text(
                 'View ranks',
                 style: TextStyle(color: Colors.white),

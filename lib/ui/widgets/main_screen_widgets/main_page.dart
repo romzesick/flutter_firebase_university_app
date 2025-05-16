@@ -5,17 +5,14 @@ import 'package:flutter/material.dart';
 import '../../components/my_bottom_nav_bar.dart';
 import 'main_screen_pages_widget/profile_page/profile_page.dart';
 
-/*
-
-M A I N P A G E
-
-- Home Page
-- Shop Page
-- Profile Page
-- Setting Page
-
-*/
-
+///
+/// S T R O N A   G Ł Ó W N A
+///
+/// Zawiera dolny pasek nawigacyjny i trzy główne zakładki:
+/// - Zadania dnia (MainTasksPage)
+/// - Cele globalne (GoalsPage)
+/// - Profil użytkownika (ProfilePage)
+///
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
 
@@ -24,11 +21,10 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  // This selected index is to control the bottom nav bar
+  /// Aktualnie wybrany indeks w dolnym pasku nawigacji
   int _selectedIndex = 0;
 
-  // This method will update our selected index
-  // when the user taps on the bottom nav bar
+  /// Metoda do zmiany zakładki po kliknięciu w dolny pasek
   void navigateBottomBar(int index) {
     if (_selectedIndex == index) return;
     setState(() {
@@ -36,16 +32,11 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
-  // pages to display
+  /// Lista stron odpowiadających zakładkom nawigacji
   final List<Widget> _pages = [
-    // tasks page
-    MainTasksPage.create(),
-
-    // goals page
-    GoalsPageWidget(),
-
-    // profile page
-    ProfilePage.create(),
+    MainTasksPage.create(), // Zadania dnia
+    GoalsPageWidget(), // Cele
+    ProfilePage.create(), // Profil
   ];
 
   @override

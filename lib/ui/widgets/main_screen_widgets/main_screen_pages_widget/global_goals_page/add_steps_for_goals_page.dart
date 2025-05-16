@@ -2,6 +2,9 @@ import 'package:firebase_flutter_app/view_models/goals_view_models/goals_view_mo
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+/// Ekran dodawania kroków do celu.
+/// Użytkownik może dodawać, edytować i usuwać kroki.
+/// Po zakończeniu przekierowywany jest z powrotem na główny ekran.
 class CreateGoalStepsPage extends StatefulWidget {
   final String goalId;
   const CreateGoalStepsPage({super.key, required this.goalId});
@@ -12,9 +15,9 @@ class CreateGoalStepsPage extends StatefulWidget {
 
 class _CreateGoalStepsPageState extends State<CreateGoalStepsPage> {
   final TextEditingController _controller = TextEditingController();
-
   String? _editingStepId;
 
+  /// Dodaje nowy krok lub zapisuje edytowany
   void _addOrUpdateStep() {
     final text = _controller.text.trim();
     if (text.isEmpty) return;
@@ -22,23 +25,24 @@ class _CreateGoalStepsPageState extends State<CreateGoalStepsPage> {
     final model = context.read<GoalsViewModel>();
 
     if (_editingStepId == null) {
-      // Добавление нового шага
+      // Nowy krok
       model.addStep(widget.goalId, text);
     } else {
-      // Обновление существующего шага
+      // Edycja istniejącego kroku
       final goal = model.goals.firstWhere((g) => g.id == widget.goalId);
       final step = goal.steps.firstWhere((s) => s.id == _editingStepId);
       final updatedStep = step.copyWith(text: text);
       model.updateStep(widget.goalId, updatedStep);
     }
 
-    // Очистка состояния ввода и режима редактирования
+    // Reset formularza
     setState(() {
       _controller.clear();
       _editingStepId = null;
     });
   }
 
+  /// Tryb edycji kroku
   void _editStep(String stepId, String currentText) {
     setState(() {
       _controller.text = currentText;
@@ -57,7 +61,7 @@ class _CreateGoalStepsPageState extends State<CreateGoalStepsPage> {
     final model = context.watch<GoalsViewModel>();
     final goal = model.goals.firstWhere(
       (g) => g.id == widget.goalId,
-      orElse: () => throw Exception('Goal not found'),
+      orElse: () => throw Exception('Cel nie został znaleziony'),
     );
 
     return PopScope(
@@ -68,7 +72,7 @@ class _CreateGoalStepsPageState extends State<CreateGoalStepsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Прогресс-бар
+              // Pasek postępu (2/2)
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
@@ -106,7 +110,7 @@ class _CreateGoalStepsPageState extends State<CreateGoalStepsPage> {
 
               const SizedBox(height: 10),
 
-              // Поле ввода и кнопка Add/Save
+              // Pole tekstowe + przycisk dodania/edycji kroku
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
@@ -156,7 +160,7 @@ class _CreateGoalStepsPageState extends State<CreateGoalStepsPage> {
 
               const SizedBox(height: 16),
 
-              // Список шагов
+              // Lista kroków
               Expanded(
                 child: ListView.builder(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -191,7 +195,7 @@ class _CreateGoalStepsPageState extends State<CreateGoalStepsPage> {
                                   ),
                                   onPressed:
                                       () => _editStep(step.id, step.text),
-                                  tooltip: 'Edit step',
+                                  tooltip: 'Edytuj krok',
                                 ),
                                 IconButton(
                                   icon: const Icon(
@@ -203,7 +207,7 @@ class _CreateGoalStepsPageState extends State<CreateGoalStepsPage> {
                                         widget.goalId,
                                         step.id,
                                       ),
-                                  tooltip: 'Delete step',
+                                  tooltip: 'Usuń krok',
                                 ),
                               ],
                             ),
@@ -215,7 +219,7 @@ class _CreateGoalStepsPageState extends State<CreateGoalStepsPage> {
                 ),
               ),
 
-              // Кнопки Create и Back
+              // Przycisk zakończenia
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,

@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_flutter_app/view_models/tasks_view_models/note_view_model.dart';
 
+/// Strona dodawania lub edycji notatki do konkretnego dnia.
+/// Obsługuje automatyczne zapisywanie z opóźnieniem (debounce).
 class AddNotePage extends StatefulWidget {
   const AddNotePage({super.key});
 
+  /// Fabryczna metoda do przekazania daty i utworzenia widoku
   static Widget create(DateTime date) {
     return ChangeNotifierProvider(
       create: (_) => NoteViewModel(date)..loadNote(),
@@ -29,9 +32,10 @@ class _AddNotePageState extends State<AddNotePage>
     super.initState();
     _controller = TextEditingController();
 
+    // Słuchamy zmian tekstu w polu
     _controller.addListener(_onNoteChanged);
 
-    // Показываем клавиатуру немного позже, когда страница отрисуется
+    // Pokazujemy klawiaturę z opóźnieniem po załadowaniu strony
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(const Duration(milliseconds: 300), () {
         if (mounted) {
@@ -41,6 +45,7 @@ class _AddNotePageState extends State<AddNotePage>
     });
   }
 
+  /// Obsługa debounced zapisu notatki — zapis po 500ms bez pisania
   void _onNoteChanged() {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
 
@@ -55,6 +60,8 @@ class _AddNotePageState extends State<AddNotePage>
     super.didChangeDependencies();
 
     final model = context.watch<NoteViewModel>();
+
+    // Inicjalne wypełnienie pola jeśli notatka istnieje
     if (_controller.text.isEmpty && model.note.isNotEmpty) {
       _controller.text = model.note;
     }
@@ -79,6 +86,8 @@ class _AddNotePageState extends State<AddNotePage>
         iconTheme: const IconThemeData(color: Colors.white),
         title: const Text('Your Note', style: TextStyle(color: Colors.white)),
       ),
+
+      // Główna zawartość: pole tekstowe lub spinner jeśli ładowanie
       body:
           model.isLoading
               ? const Center(

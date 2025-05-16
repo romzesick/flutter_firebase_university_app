@@ -4,6 +4,9 @@ import 'package:firebase_flutter_app/view_models/goals_view_models/goals_view_mo
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+/// Ekran edycji celu – zmiana tytułu oraz kroków.
+/// Użytkownik może edytować lub usuwać istniejące kroki albo dodawać nowe.
+/// Można również całkowicie usunąć cały cel.
 class EditGoalPage extends StatefulWidget {
   final String goalId;
   const EditGoalPage({super.key, required this.goalId});
@@ -24,6 +27,7 @@ class _EditGoalPageState extends State<EditGoalPage> {
     super.dispose();
   }
 
+  /// Obsługa dodania nowego kroku lub zapisanie edytowanego kroku
   void _handleStepSubmit(GoalsViewModel model, GoalModel goal) {
     final text = _stepController.text.trim();
     if (text.isEmpty) return;
@@ -43,6 +47,7 @@ class _EditGoalPageState extends State<EditGoalPage> {
     });
   }
 
+  /// Tryb edycji kroku
   void _editStep(GoalStepModel step) {
     setState(() {
       _editingStepId = step.id;
@@ -50,6 +55,7 @@ class _EditGoalPageState extends State<EditGoalPage> {
     });
   }
 
+  /// Usunięcie całego celu
   void _deleteGoal(GoalsViewModel model, GoalModel goal) async {
     await model.deleteGoal(goal.id);
     if (mounted) Navigator.pop(context);
@@ -90,6 +96,7 @@ class _EditGoalPageState extends State<EditGoalPage> {
       body: SafeArea(
         child: Column(
           children: [
+            // Edycja tytułu celu
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
@@ -129,6 +136,7 @@ class _EditGoalPageState extends State<EditGoalPage> {
               ),
             ),
 
+            // Dodanie lub zapisanie kroku
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               child: Row(
@@ -162,6 +170,7 @@ class _EditGoalPageState extends State<EditGoalPage> {
               ),
             ),
 
+            // Lista kroków do edycji lub usunięcia
             Expanded(
               child: ListView.builder(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -203,6 +212,7 @@ class _EditGoalPageState extends State<EditGoalPage> {
               ),
             ),
 
+            // Przycisk zakończenia edycji i usunięcia celu
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               child: Column(

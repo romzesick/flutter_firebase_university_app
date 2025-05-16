@@ -3,8 +3,13 @@ import 'package:firebase_flutter_app/view_models/tasks_view_models/add_tasks_vie
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+/// Strona dodawania lub edytowania zadania.
+/// Obsługuje:
+/// - wstępne ustawienie tekstu,
+/// - zapis zadania,
+/// - walidację i blokadę przycisku, gdy pole puste.
 class AddTaskPage extends StatefulWidget {
-  final TaskModel? existingTask; // <-- редактируемая задача
+  final TaskModel? existingTask; // <-- jeśli nie null, to edycja
 
   const AddTaskPage({super.key, this.existingTask});
 
@@ -14,20 +19,22 @@ class AddTaskPage extends StatefulWidget {
 
 class _AddTaskPageState extends State<AddTaskPage> {
   final FocusNode _focusNode = FocusNode();
-  late final TextEditingController _controller; // <-- контроллер теперь тут
+  late final TextEditingController _controller; // <-- kontroler pola tekstowego
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(); // <-- инициализируем один раз
+    _controller = TextEditingController(); // <-- inicjalizacja kontrolera
 
+    // Po zbudowaniu widoku
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final model = context.read<AddTaskViewModel>();
       model.init(widget.existingTask);
 
-      // Устанавливаем текст в контроллере
+      // Ustawiamy tekst w polu jeśli edytujemy
       _controller.text = model.text;
 
+      // Automatyczne ustawienie kursora w polu
       FocusScope.of(context).requestFocus(_focusNode);
     });
   }
@@ -54,6 +61,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
+                  // Pole tekstowe do wpisania treści zadania
                   TextField(
                     controller: _controller,
                     focusNode: _focusNode,
@@ -72,6 +80,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     ),
                   ),
                   const SizedBox(height: 30),
+
+                  // Przycisk zapisu zadania
                   ElevatedButton.icon(
                     onPressed:
                         model.isLoading
@@ -98,6 +108,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       ),
                     ),
                   ),
+
+                  // Wyświetlenie błędu (jeśli istnieje)
                   if (model.error != null) ...[
                     const SizedBox(height: 20),
                     Text(
@@ -110,6 +122,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
             ),
           ),
         ),
+
+        // Nakładka ładowania (ciemne tło + spinner)
         if (model.isLoading)
           const Opacity(
             opacity: 0.6,
@@ -123,7 +137,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   @override
   void dispose() {
-    _controller.dispose(); // <-- не забываем очищать
+    _controller.dispose();
     _focusNode.dispose();
     super.dispose();
   }

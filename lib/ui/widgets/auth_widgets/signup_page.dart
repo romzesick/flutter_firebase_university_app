@@ -5,9 +5,11 @@ import 'package:provider/provider.dart';
 import '../../components/my_login_button.dart';
 import '../../components/my_textfield.dart';
 
+/// Strona rejestracji – tworzenie nowego konta użytkownika
 class SignupPage extends StatelessWidget {
   const SignupPage({super.key});
 
+  /// Tworzy stronę z odpowiednim modelem widoku (ViewModel)
   static Widget create() {
     return ChangeNotifierProvider(
       create: (context) => SignUpViewModel(),
@@ -28,6 +30,8 @@ class SignupPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SizedBox(height: 50),
+
+                    // Ikona i nagłówek
                     Icon(Icons.lock, size: 100, color: Colors.grey[900]),
                     const SizedBox(height: 50),
                     Text(
@@ -36,6 +40,7 @@ class SignupPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 25),
 
+                    // Pola formularza
                     _NameField(),
                     const SizedBox(height: 10),
 
@@ -51,9 +56,11 @@ class SignupPage extends StatelessWidget {
                     _ConfirmPasswordField(),
                     const SizedBox(height: 25),
 
+                    // Przycisk rejestracji
                     const SignupButton(),
                     const SizedBox(height: 10),
 
+                    // Przejście do logowania
                     _LoginInstead(),
                     const SizedBox(height: 50),
                   ],
@@ -62,13 +69,15 @@ class SignupPage extends StatelessWidget {
             ),
           ),
         ),
-        // Error handler
+
+        // Obsługa błędów
         _ErrorHandler(),
       ],
     );
   }
 }
 
+/// Pole do wpisania imienia
 class _NameField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -80,6 +89,7 @@ class _NameField extends StatelessWidget {
   }
 }
 
+/// Pole do wpisania wieku
 class _AgeField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -91,6 +101,7 @@ class _AgeField extends StatelessWidget {
   }
 }
 
+/// Pole do wpisania adresu e-mail
 class _EmailField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -102,6 +113,7 @@ class _EmailField extends StatelessWidget {
   }
 }
 
+/// Pole do wpisania hasła
 class _PasswordField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -113,6 +125,7 @@ class _PasswordField extends StatelessWidget {
   }
 }
 
+/// Pole do potwierdzenia hasła
 class _ConfirmPasswordField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -124,6 +137,7 @@ class _ConfirmPasswordField extends StatelessWidget {
   }
 }
 
+/// Przycisk tworzenia konta
 class SignupButton extends StatelessWidget {
   const SignupButton({super.key});
 
@@ -136,12 +150,18 @@ class SignupButton extends StatelessWidget {
     if (isLoading) {
       return const CircularProgressIndicator();
     }
+
     return MyButton(
       signInUp: 'Sign Up',
       onTap: () async {
+        // Ukrycie klawiatury
         FocusScope.of(context).unfocus();
+
+        // Próba rejestracji
         final success =
             await context.read<SignUpViewModel>().onSignUpButtonPressed();
+
+        // Jeśli sukces — przejście do głównego wrappera (AuthWrapper)
         if (success && context.mounted) {
           Navigator.of(context).pushAndRemoveUntil(
             MaterialPageRoute(builder: (_) => const AuthWrapperWidget()),
@@ -153,6 +173,7 @@ class SignupButton extends StatelessWidget {
   }
 }
 
+/// Przycisk przejścia do strony logowania
 class _LoginInstead extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -175,6 +196,7 @@ class _LoginInstead extends StatelessWidget {
   }
 }
 
+/// Wyświetla komunikaty o błędach (np. niepoprawne dane)
 class _ErrorHandler extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

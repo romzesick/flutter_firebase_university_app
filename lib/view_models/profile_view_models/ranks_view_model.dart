@@ -2,6 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:firebase_flutter_app/domain/models/rank_model.dart';
 import 'package:firebase_flutter_app/services/rank_service.dart';
 
+/// ViewModel odpowiedzialny za pobieranie i przechowywanie informacji o rangach.
+///
+/// Obsługuje:
+/// - załadowanie wszystkich rang z bazy danych,
+/// - określenie aktualnej rangi użytkownika,
+/// - pobranie łącznej liczby punktów użytkownika.
+///
+/// Stan ładowania oraz ewentualne błędy dostępne są przez pola `isLoading` i `error`.
+
 class RankViewModel extends ChangeNotifier {
   final RankService _rankService = RankService();
 
@@ -17,6 +26,7 @@ class RankViewModel extends ChangeNotifier {
   String? get error => _error;
   bool get isLoading => _isLoading;
 
+  /// Ładowanie wszystkich danych: listy rang, rangi użytkownika i punktów.
   Future<void> loadRanks() async {
     _isLoading = true;
     _error = null;

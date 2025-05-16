@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 
-/*
-
-B U T T O N
-
-This is a custom built sign in button!
-
-*/
-
+///
+/// P R Z Y C I S K
+///
+/// Uniwersalny przycisk używany w formularzach logowania i rejestracji.
+///
 class MyButton extends StatelessWidget {
+  /// Tekst wyświetlany na przycisku (np. "Sign In" lub "Sign Up")
   final String signInUp;
+
+  /// Funkcja wykonywana po kliknięciu przycisku
   final Function()? onTap;
 
   const MyButton({super.key, required this.onTap, required this.signInUp});

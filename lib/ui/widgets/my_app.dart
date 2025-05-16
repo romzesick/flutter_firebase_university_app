@@ -1,6 +1,7 @@
 import 'package:firebase_flutter_app/ui/widgets/auth_widgets/auth_wrapper_widget.dart';
-import 'package:firebase_flutter_app/ui/widgets/auth_widgets/login_page.dart';
 import 'package:flutter/material.dart';
+
+/// Główna klasa aplikacji — punkt wejścia interfejsu użytkownika
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
       ),
-      routes: {'/login': (context) => LoginPage()},
+      // Widżet startowy, który sprawdza status autoryzacji użytkownika
       home: AuthWrapperWidget(),
     );
   }

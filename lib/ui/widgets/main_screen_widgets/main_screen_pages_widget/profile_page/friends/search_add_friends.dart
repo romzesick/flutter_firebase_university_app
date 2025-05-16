@@ -4,6 +4,15 @@ import 'package:firebase_flutter_app/view_models/profile_view_models/friends_vie
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+/// Strona pozwalająca przeszukiwać wszystkich użytkowników aplikacji
+/// i dodawać ich jako znajomych.
+///
+/// Funkcjonalności:
+/// - Wyszukiwanie użytkowników po e-mailu,
+/// - Dodawanie i usuwanie znajomych,
+/// - Anulowanie wysłanego zaproszenia,
+/// - Oznaczenie statusu znajomości (już znajomy / oczekujące / możliwe do dodania),
+/// - Odświeżenie rankingu po usunięciu znajomego.
 class FriendsListPage extends StatelessWidget {
   const FriendsListPage({super.key, required this.friendsRankingViewModel});
 
@@ -24,8 +33,12 @@ class FriendsListPage extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
+              /// Pole wyszukiwania
               _SearchField(),
-              SizedBox(height: 16),
+
+              const SizedBox(height: 16),
+
+              /// Lista użytkowników
               Expanded(
                 child: _UsersList(
                   friendsRankingViewModel: friendsRankingViewModel,
@@ -39,12 +52,14 @@ class FriendsListPage extends StatelessWidget {
   }
 }
 
+/// Widget pola tekstowego do wyszukiwania użytkowników po adresie e-mail.
 class _SearchField extends StatelessWidget {
   const _SearchField({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final viewModel = context.read<FriendsListViewModel>();
+
     return TextField(
       controller: viewModel.searchController,
       style: const TextStyle(color: Colors.white),
@@ -63,6 +78,7 @@ class _SearchField extends StatelessWidget {
   }
 }
 
+/// Lista użytkowników pasujących do zapytania w polu wyszukiwania.
 class _UsersList extends StatelessWidget {
   const _UsersList({required this.friendsRankingViewModel});
 
@@ -86,6 +102,10 @@ class _UsersList extends StatelessWidget {
   }
 }
 
+/// Kafelek użytkownika z informacją o adresie e-mail i możliwą akcją:
+/// - Dodaj znajomego
+/// - Anuluj zaproszenie
+/// - Usuń znajomego
 class _UserTile extends StatelessWidget {
   final Map<String, dynamic> user;
   final FriendsRankingViewModel friendsRankingViewModel;
@@ -101,10 +121,11 @@ class _UserTile extends StatelessWidget {
     Color iconColor;
     VoidCallback? onPressed;
 
+    // Ustalanie statusu użytkownika
     if (viewModel.isFriend(userId)) {
       icon = Icons.check;
       iconColor = Colors.green;
-      onPressed = null; // Уже друг
+      onPressed = null;
     } else if (viewModel.isPending(userId)) {
       icon = Icons.hourglass_empty;
       iconColor = Colors.orange;

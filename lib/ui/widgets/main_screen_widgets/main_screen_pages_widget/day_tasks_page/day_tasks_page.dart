@@ -12,6 +12,13 @@ import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
+///
+/// S T R O N A   Z A D A Ń   D Z I E N N Y C H
+///
+/// Ekran wyświetlający zadania na dany dzień, postęp dnia i ogólną produktywność.
+/// Pozwala dodawać notatki, zadania, edytować je, usuwać oraz przesuwać na jutro.
+///
+
 class MainTasksPage extends StatelessWidget {
   const MainTasksPage({super.key});
 
@@ -33,6 +40,7 @@ class _MainTasksPageContent extends StatefulWidget {
   State<_MainTasksPageContent> createState() => _MainTasksPageContentState();
 }
 
+/// Główna zawartość strony – zarządza widokiem, kalendarzem i zmianą dat
 class _MainTasksPageContentState extends State<_MainTasksPageContent> {
   final ScrollController _dateScrollController = ScrollController();
   bool _showFullCalendar = false;
@@ -45,6 +53,7 @@ class _MainTasksPageContentState extends State<_MainTasksPageContent> {
     });
   }
 
+  /// Przewija poziomowy kalendarz do zaznaczonej daty
   void _scrollToSelectedDate(DateTime selectedDay) {
     final int index = selectedDay.difference(DateTime.now()).inDays + 15;
     const double itemWidth = 80.0;
@@ -100,7 +109,7 @@ class _MainTasksPageContentState extends State<_MainTasksPageContent> {
   }
 }
 
-// Date Header
+/// Nagłówek z datą i przyciskiem statystyk
 class _DateWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -135,7 +144,7 @@ class _DateWidget extends StatelessWidget {
   }
 }
 
-// Progress Widgets
+/// Sekcja z postępem dnia, średnią produktywnością i przyciskami
 class _ProgressWidget extends StatelessWidget {
   const _ProgressWidget();
   @override
@@ -178,6 +187,7 @@ class _ProgressWidget extends StatelessWidget {
   }
 }
 
+/// Postęp konkretnego dnia
 class _DayProgressWidget extends StatelessWidget {
   const _DayProgressWidget();
 
@@ -199,6 +209,7 @@ class _DayProgressWidget extends StatelessWidget {
   }
 }
 
+/// Średnia produktywność użytkownika
 class _AverageProgressWidget extends StatelessWidget {
   const _AverageProgressWidget();
 
@@ -220,6 +231,7 @@ class _AverageProgressWidget extends StatelessWidget {
   }
 }
 
+/// Przycisk dodawania notatki do dnia
 class _AddNoteButtonWidget extends StatelessWidget {
   const _AddNoteButtonWidget();
 
@@ -251,6 +263,7 @@ class _AddNoteButtonWidget extends StatelessWidget {
   }
 }
 
+/// Przycisk dodawania zadania do dnia
 class _AddTaskButtonWidget extends StatelessWidget {
   const _AddTaskButtonWidget();
 
@@ -268,9 +281,7 @@ class _AddTaskButtonWidget extends StatelessWidget {
                 builder:
                     (_) => MultiProvider(
                       providers: [
-                        ChangeNotifierProvider.value(
-                          value: model,
-                        ), // DayTasksViewModel
+                        ChangeNotifierProvider.value(value: model),
                         ChangeNotifierProvider(
                           create: (_) => AddTaskViewModel(),
                         ),
@@ -296,7 +307,7 @@ class _AddTaskButtonWidget extends StatelessWidget {
   }
 }
 
-// Tassk On da screen
+/// Lista zadań dnia – edytowalne, przesuwalne i animowane
 class _TasksWidget extends StatelessWidget {
   const _TasksWidget();
 
@@ -394,9 +405,7 @@ class _TasksWidget extends StatelessWidget {
                                         create: (_) => AddTaskViewModel(),
                                       ),
                                     ],
-                                    child: AddTaskPage(
-                                      existingTask: task,
-                                    ), // <-- ПЕРЕДАЕМ ЗАДАЧУ ДЛЯ РЕДАКТИРОВАНИЯ
+                                    child: AddTaskPage(existingTask: task),
                                   ),
                             ),
                           );
@@ -465,9 +474,10 @@ class _TasksWidget extends StatelessWidget {
   }
 }
 
+/// Animowane pojawianie się widżetów
 class FadeSlideIn extends StatelessWidget {
   final Widget child;
-  final int delay; // задержка в миллисекундах
+  final int delay;
 
   const FadeSlideIn({super.key, required this.child, this.delay = 0});
 
@@ -490,6 +500,9 @@ class FadeSlideIn extends StatelessWidget {
   }
 }
 
+/// Dolny selektor dat:
+/// - pozwala przełączać się między datami
+/// - przeciągnięcie w górę pokazuje pełny kalendarz (TableCalendar)
 class _CalendarSelector extends StatelessWidget {
   final ScrollController scrollController;
   final bool showFullCalendar;

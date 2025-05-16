@@ -6,6 +6,12 @@ import 'package:firebase_flutter_app/view_models/profile_view_models/friends_vie
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+/// Widget pokazujący ranking przyjaciół oraz umożliwiający:
+/// - przejście do listy przyjaciół,
+/// - przejście do strony z zaproszeniami do znajomych (z licznikiem powiadomień),
+/// - dodawanie znajomych.
+///
+/// Widget wyświetla ranking użytkownika i jego znajomych na podstawie produktywności.
 class FriendsProgressWidget extends StatefulWidget {
   const FriendsProgressWidget({super.key});
 
@@ -17,6 +23,7 @@ class _FriendsProgressWidgetState extends State<FriendsProgressWidget> {
   @override
   Widget build(BuildContext context) {
     final friendsRankingViewModel = context.read<FriendsRankingViewModel>();
+
     return Consumer<FriendRequestsNotifier>(
       builder: (context, notifier, child) {
         return Container(
@@ -30,6 +37,7 @@ class _FriendsProgressWidgetState extends State<FriendsProgressWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                /// Nagłówek z przyciskiem do dodawania znajomych i licznikiem zaproszeń
                 Row(
                   children: [
                     Expanded(
@@ -110,6 +118,8 @@ class _FriendsProgressWidgetState extends State<FriendsProgressWidget> {
                   ],
                 ),
                 SizedBox(height: 10),
+
+                /// Lista przyjaciół z rankingiem
                 Expanded(child: _FriendsRankingList()),
               ],
             ),
@@ -120,6 +130,8 @@ class _FriendsProgressWidgetState extends State<FriendsProgressWidget> {
   }
 }
 
+/// Lista przyjaciół posortowana według produktywności.
+/// Użytkownik oznaczony jest zielonym obramowaniem i dopiskiem "(you)".
 class _FriendsRankingList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -135,7 +147,7 @@ class _FriendsRankingList extends StatelessWidget {
       return const Center(
         child: Text(
           'You dont have firends yet',
-          style: TextStyle(color: Colors.white),
+          style: TextStyle(color: Colors.white70),
         ),
       );
     }

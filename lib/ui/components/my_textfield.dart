@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-/*
-
-T E X T F I E L D
-
-This is used to get the user input when they type something in.
-We will use this for the email and password fields when we log them in
-
-*/
+/// P O L E   T E K S T O W E
 
 class MyTextField extends StatelessWidget {
+  /// Kontroler tekstu (opcjonalnie, jeśli potrzebna bezpośrednia kontrola)
   final TextEditingController? controller;
+
+  /// Funkcja wywoływana przy każdej zmianie tekstu
   final void Function(String)? onChanged;
+
+  /// Tekst podpowiedzi (placeholder)
   final String hintText;
+
+  /// Czy pole ma ukrywać tekst (np. dla haseł)
   final bool obscureText;
 
   const MyTextField({
@@ -32,14 +32,21 @@ class MyTextField extends StatelessWidget {
         controller: controller,
         obscureText: obscureText,
         decoration: InputDecoration(
+          // Obramowanie nieaktywne
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white),
           ),
+
+          // Obramowanie aktywne (gdy pole jest zaznaczone)
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.grey.shade400),
           ),
+
+          // Tło pola
           fillColor: Colors.grey.shade200,
           filled: true,
+
+          // Tekst podpowiedzi
           hintText: hintText,
           hintStyle: TextStyle(color: Colors.grey[500]),
         ),

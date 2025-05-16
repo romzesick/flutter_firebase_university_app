@@ -4,6 +4,7 @@ import 'package:firebase_flutter_app/ui/widgets/main_screen_widgets/main_screen_
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
+// Widżet ustawień aplikacji z opcją wylogowania, usunięcia konta i przejścia do strony "O aplikacji"
 class SettingsPageWidget extends StatefulWidget {
   const SettingsPageWidget({super.key});
 
@@ -12,7 +13,7 @@ class SettingsPageWidget extends StatefulWidget {
 }
 
 class _SettingsPageWidgetState extends State<SettingsPageWidget> {
-  // method to log user out
+  // Wylogowanie użytkownika i przejście do ekranu logowania
   void _logUserOut() {
     FirebaseAuth.instance.signOut();
     if (context.mounted) {
@@ -23,10 +24,11 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
     }
   }
 
+  // Usunięcie konta użytkownika i wylogowanie
   Future<void> _deleteAccountLogOut() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
-      await user.delete();
+      await user.delete(); // Usunięcie konta
       FirebaseAuth.instance.signOut();
       if (context.mounted) {
         Navigator.of(context).pushAndRemoveUntil(
@@ -37,12 +39,15 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
     }
   }
 
+  // Flaga do przechowywania stanu powiadomień
   bool _notificationsEnabled = true;
 
+  // Włączenie lub wyłączenie powiadomień push
   Future<void> _toggleNotifications(bool value) async {
     setState(() => _notificationsEnabled = value);
 
     if (value) {
+      // Prośba o pozwolenie na powiadomienia
       final settings = await FirebaseMessaging.instance.requestPermission();
       final granted =
           settings.authorizationStatus == AuthorizationStatus.authorized;
@@ -56,7 +61,7 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
         ),
       );
     } else {
-      // Просто отключаем получение уведомлений
+      // Wyłączenie inicjalizacji powiadomień
       await FirebaseMessaging.instance.setAutoInitEnabled(false);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -73,13 +78,14 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Settings'),
+        title: Text('Settings'), // Tytuł AppBar
         foregroundColor: Colors.white,
         backgroundColor: Colors.transparent,
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
+            // Przełącznik powiadomień
             SettingsItemsWidget(
               function: () {},
               widget: Switch(
@@ -89,6 +95,7 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
               ),
               text: 'Notifications',
             ),
+            // Przejście do strony "O aplikacji"
             SettingsItemsWidget(
               function: () {
                 Navigator.push(
@@ -99,11 +106,13 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
               widget: Icon(Icons.info, color: Colors.white),
               text: 'About App',
             ),
+            // Przycisk wylogowania
             SettingsItemsWidget(
               function: _logUserOut,
               widget: Icon(Icons.logout, color: Colors.white),
               text: 'Log Out',
             ),
+            // Przycisk usuwania konta
             SettingsItemsWidget(
               function: _deleteAccountLogOut,
               widget: Icon(Icons.delete, color: Colors.white),
@@ -116,10 +125,12 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
   }
 }
 
+// Widżet pojedynczego elementu ustawień (np. przełącznik, przycisk)
 class SettingsItemsWidget extends StatelessWidget {
-  final Function function;
-  final Widget widget;
-  final String text;
+  final Function function; // Akcja po kliknięciu
+  final Widget widget; // Ikona lub przełącznik
+  final String text; // Opis
+
   const SettingsItemsWidget({
     super.key,
     required this.widget,

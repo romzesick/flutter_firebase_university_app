@@ -3,6 +3,11 @@ import 'package:firebase_flutter_app/view_models/profile_view_models/ranks_view_
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+/// Popup do systemu codziennych nagród (Daily Reward).
+/// Zawiera:
+/// - wyświetlanie listy 7-dniowego cyklu nagród,
+/// - obsługę stanu dziennego streaku i punktów,
+/// - przycisk odbioru nagrody danego dnia,
 class DailyRewardPopup extends StatelessWidget {
   final RankViewModel rankViewModel;
 
@@ -12,6 +17,7 @@ class DailyRewardPopup extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Używamy Provider do stworzenia i udostępnienia DailyRewardViewModel
     return ChangeNotifierProvider(
       create: (_) => DailyRewardViewModel(rankViewModel)..loadRewardData(),
       child: const _RewardContent(),
@@ -36,6 +42,8 @@ class _RewardContent extends StatelessWidget {
             color: Color(0xFF1C1C1E),
             borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
           ),
+
+          // Ładowanie danych
           child:
               model.isLoading
                   ? const Center(
@@ -53,6 +61,8 @@ class _RewardContent extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 16),
+
+                      // Lista dni z nagrodami
                       Expanded(
                         child: Consumer<DailyRewardViewModel>(
                           builder: (context, model, _) {
@@ -88,6 +98,7 @@ class _RewardContent extends StatelessWidget {
                                       ),
                                       child: Row(
                                         children: [
+                                          // Etykieta dnia
                                           Expanded(
                                             child: Text(
                                               'Day $day',
@@ -96,6 +107,8 @@ class _RewardContent extends StatelessWidget {
                                               ),
                                             ),
                                           ),
+
+                                          // Przycisk do odebrania lub status
                                           GestureDetector(
                                             onTap: () async {
                                               if (isToday && model.canClaim) {
@@ -164,6 +177,7 @@ class _RewardContent extends StatelessWidget {
                         ),
                       ),
 
+                      // Przycisk zamknięcia popupu
                       Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 20,

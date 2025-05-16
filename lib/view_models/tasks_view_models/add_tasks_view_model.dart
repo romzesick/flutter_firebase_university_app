@@ -3,6 +3,8 @@ import 'package:firebase_flutter_app/view_models/tasks_view_models/task_view_mod
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+/// Klasa stanu dla AddTaskViewModel.
+/// Przechowuje: tekst zadania, status ładowania, ewentualny błąd.
 class _AddTaskViewModelState {
   final String text;
   final bool isLoading;
@@ -27,6 +29,8 @@ class _AddTaskViewModelState {
   }
 }
 
+/// ViewModel do dodawania i edytowania zadania.
+/// Obsługuje: inicjalizację z istniejącym zadaniem, zapis, walidację i błędy.
 class AddTaskViewModel extends ChangeNotifier {
   _AddTaskViewModelState _state = const _AddTaskViewModelState();
   _AddTaskViewModelState get state => _state;
@@ -35,21 +39,23 @@ class AddTaskViewModel extends ChangeNotifier {
   bool get isLoading => _state.isLoading;
   String? get error => _state.error;
 
-  TaskModel? _editingTask; // <--- ДОБАВЛЕНО: сюда сохраним редактируемую задачу
+  TaskModel? _editingTask; // <-- zadanie do edycji (jeśli istnieje)
 
+  /// Inicjalizacja ViewModelu (jeśli przekazano istniejące zadanie — tryb edycji)
   void init(TaskModel? task) {
-    // <--- ДОБАВЛЕНО: инициализация для редактирования
     if (task != null) {
       _editingTask = task;
       _state = _state.copyWith(text: task.text);
     }
   }
 
+  /// Obsługuje zmianę tekstu w polu
   void changeText(String value) {
     _state = _state.copyWith(text: value);
     notifyListeners();
   }
 
+  /// Zapisuje nowe lub edytowane zadanie
   Future<void> saveTask(BuildContext context) async {
     if (text.trim().isEmpty) {
       _setError('Task cannot be empty');
@@ -62,16 +68,16 @@ class AddTaskViewModel extends ChangeNotifier {
       final dayTasksViewModel = context.read<DayTasksViewModel>();
 
       if (_editingTask == null) {
-        // Новая задача
+        // Dodajemy nowe zadanie
         await dayTasksViewModel.addTask(text.trim());
       } else {
-        // Редактирование задачи
+        // Aktualizujemy istniejące
         final updatedTask = _editingTask!.copyWith(text: text.trim());
         await dayTasksViewModel.updateTask(updatedTask);
       }
 
       if (context.mounted) {
-        Navigator.of(context).pop();
+        Navigator.of(context).pop(); // Zamykamy stronę
       }
     } catch (e) {
       _setError('Failed to save task: $e');
@@ -80,11 +86,13 @@ class AddTaskViewModel extends ChangeNotifier {
     _setLoading(false);
   }
 
+  /// Ustawia status ładowania
   void _setLoading(bool value) {
     _state = _state.copyWith(isLoading: value);
     notifyListeners();
   }
 
+  /// Ustawia błąd do wyświetlenia
   void _setError(String message) {
     _state = _state.copyWith(error: message);
     notifyListeners();

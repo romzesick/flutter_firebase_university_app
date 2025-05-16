@@ -2,9 +2,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_flutter_app/services/tasks_servise.dart';
 
+/// Serwis do obsługi statystyk produktywności użytkownika.
+/// Liczy średnią produktywność, zapisuje i pobiera ją z Firestore.
 class UserStatsService {
   final DayService _dayService = DayService();
 
+  /// Oblicza średnią produktywność użytkownika
+  ///
+  /// Uwzględnia tylko dni, które:
+  /// - są dzisiaj lub wcześniej
+  /// - zawierają przynajmniej jedno zadanie
+  ///
+  /// Zwraca wartość od 0.0 do 1.0
   Future<double> calculateTotalProductivity() async {
     final allDays = await _dayService.fetchAllUserDays();
     final now = DateTime.now();
@@ -25,7 +34,9 @@ class UserStatsService {
     return totalProgress / relevantDays.length;
   }
 
-  // сюда мы помещаем, ту продуктивность, что мы считаем выше
+  /// Zapisuje obliczoną produktywność użytkownika do Firestore
+  ///
+  /// Przechowywana wartość jest potem wykorzystywana do rankingu i profilu
   Future<void> updateTotalProductivity(double? productivity) async {
     final userId = FirebaseAuth.instance.currentUser!.uid;
 
@@ -34,6 +45,7 @@ class UserStatsService {
     });
   }
 
+  /// Pobiera ostatnio zapisaną produktywność z Firestore (bez przeliczania)
   Future<double?> getCachedTotalProductivity() async {
     final userDoc =
         await FirebaseFirestore.instance

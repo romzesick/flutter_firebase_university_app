@@ -8,24 +8,30 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
+  // Inicjalizacja Fluttera przed użyciem Firebase
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Inicjalizacja Firebase
   await Firebase.initializeApp();
 
+  // Obsługa wiadomości push w tle
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
+  // Pobranie tokenu FCM urządzenia
   final messaging = FirebaseMessaging.instance;
   final token = await messaging.getToken();
-  log('🔥 FCM Token: $token');
+  log('FCM Token: $token');
 
-  // Запрос разрешений
+  // Żądanie uprawnień do wysyłania powiadomień
   final settings = await messaging.requestPermission();
-  log('🔐 Permissions: ${settings.authorizationStatus}');
+  log('Permissions: ${settings.authorizationStatus}');
 
   // Foreground listener
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    log('🔔 Foreground: ${message.notification?.title}');
+    log('Foreground: ${message.notification?.title}');
   });
 
+  // Uruchomienie aplikacji z dostarczonym modelem GoalsViewModel
   runApp(
     MultiProvider(
       providers: [ChangeNotifierProvider(create: (_) => GoalsViewModel())],
@@ -34,6 +40,7 @@ void main() async {
   );
 }
 
+// Funkcja obsługująca wiadomości push w tle
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();

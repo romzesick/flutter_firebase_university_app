@@ -4,6 +4,8 @@ import 'package:firebase_flutter_app/view_models/goals_view_models/goals_view_mo
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+/// Ekran tworzenia nowego celu.
+/// Użytkownik wpisuje nazwę celu, po czym zostaje przekierowany na stronę dodawania kroków.
 class CreateGoalPage extends StatefulWidget {
   const CreateGoalPage({super.key});
 
@@ -18,8 +20,9 @@ class _CreateGoalPageState extends State<CreateGoalPage> {
   @override
   void initState() {
     super.initState();
+    // Reagujemy na zmianę tekstu, by np. aktywować przycisk
     _controller.addListener(() {
-      setState(() {}); // Обновляет UI при изменении текста
+      setState(() {});
     });
   }
 
@@ -29,6 +32,7 @@ class _CreateGoalPageState extends State<CreateGoalPage> {
     super.dispose();
   }
 
+  /// Obsługa naciśnięcia "Next"
   Future<void> _handleNext() async {
     final title = _controller.text.trim();
     if (title.isEmpty) {
@@ -37,7 +41,6 @@ class _CreateGoalPageState extends State<CreateGoalPage> {
       ).showSnackBar(const SnackBar(content: Text('Describe your goal')));
       return;
     }
-    ;
 
     setState(() => _isLoading = true);
     final model = context.read<GoalsViewModel>();
@@ -46,17 +49,14 @@ class _CreateGoalPageState extends State<CreateGoalPage> {
 
     GoalModel? createdGoal;
 
-    // Ожидание, пока цель появится
+    // Czekamy aż nowy cel pojawi się w modelu (max 5s)
     for (int i = 0; i < 50; i++) {
-      // 50 * 100ms = 5 секунд макс ожидания
       await Future.delayed(const Duration(milliseconds: 100));
       if (!mounted) return;
       try {
         createdGoal = model.goals.firstWhere((g) => g.id == newGoalId);
         break;
-      } catch (_) {
-        // Ждём появления цели
-      }
+      } catch (_) {}
     }
 
     setState(() => _isLoading = false);
@@ -77,18 +77,18 @@ class _CreateGoalPageState extends State<CreateGoalPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Progress Bar
+            // Pasek postępu (1 z 2 kroków)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               child: LinearProgressIndicator(
-                value: 0.5, // 1/2 progress
+                value: 0.5,
                 color: Colors.green,
                 backgroundColor: Colors.grey[900],
                 minHeight: 4,
               ),
             ),
 
-            // Title
+            // Podtytuł
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
@@ -99,7 +99,7 @@ class _CreateGoalPageState extends State<CreateGoalPage> {
 
             const SizedBox(height: 10),
 
-            // Input Title
+            // Tytuł sekcji
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
@@ -114,7 +114,7 @@ class _CreateGoalPageState extends State<CreateGoalPage> {
 
             const SizedBox(height: 10),
 
-            // Input Field
+            // Pole tekstowe do wpisania celu
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: TextField(
@@ -139,7 +139,7 @@ class _CreateGoalPageState extends State<CreateGoalPage> {
 
             const Spacer(),
 
-            // Buttons
+            // Przyciski
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               child: Column(

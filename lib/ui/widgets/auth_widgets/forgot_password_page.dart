@@ -3,9 +3,11 @@ import 'package:firebase_flutter_app/view_models/auth_view_models/reset_password
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+/// Strona do resetowania hasła – użytkownik podaje email, aby otrzymać link
 class ForgotPasswordPage extends StatelessWidget {
   const ForgotPasswordPage({super.key});
 
+  /// Tworzy stronę z powiązanym modelem ResetPasswordViewModel
   static Widget create() {
     return ChangeNotifierProvider(
       create: (_) => ResetPasswordViewModel(),
@@ -28,8 +30,11 @@ class ForgotPasswordPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  // Ikona wiadomości e-mail
                   Icon(Icons.email, size: 100, color: Colors.grey[900]),
                   const SizedBox(height: 50),
+
+                  // Instrukcja dla użytkownika
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: Text(
@@ -41,22 +46,27 @@ class ForgotPasswordPage extends StatelessWidget {
 
                   SizedBox(height: 20),
 
+                  // Pole do wpisania e-maila
                   const _ResetTextField(),
 
                   SizedBox(height: 20),
 
+                  // Przycisk do zresetowania hasła
                   const _ResetButton(),
                 ],
               ),
             ),
           ),
         ),
+
+        // Obsługa komunikatów o błędach i sukcesie
         _ErrorHandler(),
       ],
     );
   }
 }
 
+/// Pole tekstowe do wpisania adresu e-mail
 class _ResetTextField extends StatelessWidget {
   const _ResetTextField();
 
@@ -70,6 +80,7 @@ class _ResetTextField extends StatelessWidget {
   }
 }
 
+/// Przycisk wysyłający żądanie resetu hasła
 class _ResetButton extends StatelessWidget {
   const _ResetButton();
 
@@ -87,9 +98,14 @@ class _ResetButton extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
       child: GestureDetector(
         onTap: () async {
+          // Ukrycie klawiatury
           FocusScope.of(context).unfocus();
+
+          // Próba resetu hasła
           final success =
               await context.read<ResetPasswordViewModel>().resetPassword();
+
+          // Powrót na poprzednią stronę po sukcesie
           if (success && context.mounted) {
             Navigator.pop(context);
           }
@@ -117,6 +133,7 @@ class _ResetButton extends StatelessWidget {
   }
 }
 
+/// Obsługuje wyświetlanie błędów i komunikatów o sukcesie
 class _ErrorHandler extends StatelessWidget {
   const _ErrorHandler();
 
@@ -125,6 +142,7 @@ class _ErrorHandler extends StatelessWidget {
     return Consumer<ResetPasswordViewModel>(
       builder: (_, model, __) {
         final message = model.message?.dataIfNotHandled;
+
         if (message != null) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -140,6 +158,7 @@ class _ErrorHandler extends StatelessWidget {
             );
           });
         }
+
         return const SizedBox.shrink();
       },
     );

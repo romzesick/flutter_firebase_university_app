@@ -3,6 +3,9 @@ import 'package:firebase_flutter_app/domain/models/goal_model.dart';
 import 'package:firebase_flutter_app/domain/models/goal_steps_model.dart';
 import 'package:firebase_flutter_app/services/goals_service.dart';
 
+/// ViewModel odpowiedzialny za zarządzanie celami.
+/// Obsługuje dodawanie, edycję, usuwanie celów i kroków,
+/// przelicza postęp i aktualizuje dane w Firestore.
 class GoalsViewModel extends ChangeNotifier {
   final GoalsService _goalsService = GoalsService();
 
@@ -21,10 +24,12 @@ class GoalsViewModel extends ChangeNotifier {
     super.dispose();
   }
 
+  /// Bezpieczne notifyListeners, żeby nie rzucało błędem po dispose
   void _safeNotifyListeners() {
     if (!_isDisposed) notifyListeners();
   }
 
+  /// Załadowanie listy celów (domyślnie nieukończonych)
   Future<void> loadGoals({bool completed = false}) async {
     _isLoading = true;
     _error = null;
@@ -40,6 +45,7 @@ class GoalsViewModel extends ChangeNotifier {
     _safeNotifyListeners();
   }
 
+  /// Dodanie nowego celu i zwrócenie jego ID
   Future<String?> addGoalAndReturnId(String title) async {
     try {
       final id = await _goalsService.addGoalAndReturnId(title);
@@ -60,6 +66,7 @@ class GoalsViewModel extends ChangeNotifier {
     }
   }
 
+  /// Aktualizacja istniejącego celu
   Future<void> updateGoal(GoalModel updatedGoal) async {
     try {
       await _goalsService.updateGoal(updatedGoal);
@@ -74,6 +81,7 @@ class GoalsViewModel extends ChangeNotifier {
     }
   }
 
+  /// Usunięcie celu
   Future<void> deleteGoal(String id) async {
     try {
       await _goalsService.deleteGoal(id);
@@ -85,6 +93,7 @@ class GoalsViewModel extends ChangeNotifier {
     }
   }
 
+  /// Dodanie nowego kroku do celu
   Future<void> addStep(String goalId, String text) async {
     try {
       final goalIndex = _goals.indexWhere((g) => g.id == goalId);
@@ -109,6 +118,7 @@ class GoalsViewModel extends ChangeNotifier {
     }
   }
 
+  /// Aktualizacja istniejącego kroku
   Future<void> updateStep(String goalId, GoalStepModel updatedStep) async {
     try {
       final goalIndex = _goals.indexWhere((g) => g.id == goalId);
@@ -135,6 +145,7 @@ class GoalsViewModel extends ChangeNotifier {
     }
   }
 
+  /// Usunięcie kroku z celu
   Future<void> deleteStep(String goalId, String stepId) async {
     try {
       final goalIndex = _goals.indexWhere((g) => g.id == goalId);
@@ -158,6 +169,7 @@ class GoalsViewModel extends ChangeNotifier {
     }
   }
 
+  /// Zmiana statusu wykonania kroku (done/undone)
   Future<void> toggleStepDone(String goalId, String stepId) async {
     try {
       final goalIndex = _goals.indexWhere((g) => g.id == goalId);
@@ -185,6 +197,7 @@ class GoalsViewModel extends ChangeNotifier {
     }
   }
 
+  /// Wyczyść aktualny błąd
   void clearError() {
     _error = null;
     _safeNotifyListeners();

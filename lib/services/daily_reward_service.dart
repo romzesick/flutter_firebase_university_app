@@ -3,10 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_flutter_app/domain/models/daily_reward_model.dart';
 import 'package:firebase_flutter_app/services/rank_service.dart';
 
+/// Serwis odpowiedzialny za codzienne nagrody użytkownika.
+/// Obsługuje aktualizację streaków, przyznawanie punktów oraz komunikację z bazą danych.
 class DailyRewardService {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
 
+  /// Pobiera dane nagrody codziennej z Firestore
   Future<DailyRewardModel?> getRewardData() async {
     final userId = _auth.currentUser!.uid;
     final doc = await _firestore.collection('users').doc(userId).get();
@@ -15,6 +18,7 @@ class DailyRewardService {
     return DailyRewardModel.fromJson(doc.data()!['dailyReward']);
   }
 
+  /// Aktualizuje dane nagrody w Firestore
   Future<void> updateReward(DailyRewardModel reward) async {
     final userId = _auth.currentUser!.uid;
     await _firestore.collection('users').doc(userId).set({
@@ -22,6 +26,7 @@ class DailyRewardService {
     }, SetOptions(merge: true));
   }
 
+  /// Sprawdza, czy streak został zachowany, czy powinien zostać zresetowany
   Future<DailyRewardModel> evaluateStreak(DailyRewardModel reward) async {
     final now = DateTime.now();
     final last = reward.lastClaimedDate;
@@ -29,6 +34,7 @@ class DailyRewardService {
         now.difference(DateTime(last.year, last.month, last.day)).inDays;
 
     if (daysGap > 1) {
+      // Streak został przerwany
       return DailyRewardModel(
         currentStreak: 1,
         lastClaimedDate: reward.lastClaimedDate,
@@ -38,6 +44,7 @@ class DailyRewardService {
     return reward;
   }
 
+  /// Przyznaje codzienną nagrodę – punkty i streak
   Future<bool> claimDailyReward() async {
     final userId = _auth.currentUser!.uid;
     final docRef = _firestore.collection('users').doc(userId);
@@ -47,8 +54,9 @@ class DailyRewardService {
     DailyRewardModel reward;
 
     if (!doc.exists || doc.data()?['dailyReward'] == null) {
+      // Pierwsze przyznanie nagrody
       reward = DailyRewardModel(
-        currentStreak: 2, // начинаем со второго, т.к. после клика
+        currentStreak: 2, // zaczynamy od 2, bo nagroda jest kliknięta
         lastClaimedDate: now,
         totalPoints: _getPointsForDay(1),
       );
@@ -60,7 +68,7 @@ class DailyRewardService {
           now.difference(DateTime(last.year, last.month, last.day)).inDays;
 
       final nextStreak =
-          daysGap == 1 ? reward.currentStreak + 1 : 2; // сброшен и снова второй
+          daysGap == 1 ? reward.currentStreak + 1 : 2; // reset jeśli przerwany
       final dayInCycle = ((nextStreak - 2) % 7) + 1;
 
       reward = DailyRewardModel(
@@ -75,6 +83,7 @@ class DailyRewardService {
     return true;
   }
 
+  /// Zwraca liczbę punktów przyznawanych w zależności od dnia streaka (1-7)
   int _getPointsForDay(int day) {
     switch (day) {
       case 1:

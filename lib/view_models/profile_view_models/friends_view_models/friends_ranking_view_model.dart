@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_flutter_app/services/friend_service.dart';
 
+/// ViewModel odpowiedzialny za pobieranie i przechowywanie rankingu znajomych.
+///
+/// Pobiera listę znajomych posortowaną według `totalProductivity`
+/// i udostępnia ją do wykorzystania w widżetach.
 class FriendsRankingViewModel extends ChangeNotifier {
   final FriendService _friendService = FriendService();
-  List<Map<String, dynamic>> friendsRanking = [];
-  bool isLoading = false;
+  List<Map<String, dynamic>> friendsRanking =
+      []; // lista znajomych z rankingiem
+  bool isLoading = false; // stan ładowania
 
   FriendsRankingViewModel() {
-    loadFriendsRanking();
+    loadFriendsRanking(); // automatyczne ładowanie po utworzeniu
   }
 
+  /// Ładuje ranking znajomych z serwera i powiadamia widżety.
   Future<void> loadFriendsRanking() async {
     isLoading = true;
     notifyListeners();
