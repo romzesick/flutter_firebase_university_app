@@ -11,6 +11,7 @@ A sleek, feature-rich productivity tracking application built with Flutter and p
 ## 🚀 Features
 
 * 📆 Daily Tasks: Add, complete, delete, and transfer tasks between days. Add your notes to the days
+* 📆 Daily and Average Productivity: By completing daily tasks you raise your daily and average productivity
 * 📅 Interactive Calendar: Swipe and tap to manage your productivity easily
 * 📊 Stats Page: Visualize daily/weekly/monthly productivity with dynamic charts
 * 🧠 Global Goals: Define long-term objectives broken into steps
@@ -33,7 +34,7 @@ A sleek, feature-rich productivity tracking application built with Flutter and p
 
 ## 🎥 Video of my app
 
-[![Watch the video](https://img.youtube.com/vi/v=NtxZy95QCc4/0.jpg)](https://www.youtube.com/watch?v=NtxZy95QCc4)
+[![Watch the video](https://img.youtube.com/vi/NtxZy95QCc4/0.jpg)](https://www.youtube.com/watch?v=NtxZy95QCc4)
 
 ---
 
