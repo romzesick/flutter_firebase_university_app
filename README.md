@@ -34,7 +34,7 @@ A sleek, feature-rich productivity tracking application built with Flutter and p
 
 ## 🎥 Video of my app
 
-Watch the video, Creating account, resetting password and some more features were scept not to take to much time
+Watch the video, Creating account, resetting password and some more features were skipped not to take to much time
 
 [![Watch the video, Creating account, resetting password and some more features were scept not to take to much time](https://img.youtube.com/vi/NtxZy95QCc4/0.jpg)](https://www.youtube.com/watch?v=NtxZy95QCc4)
 
