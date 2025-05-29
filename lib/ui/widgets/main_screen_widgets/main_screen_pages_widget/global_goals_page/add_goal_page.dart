@@ -120,6 +120,7 @@ class _CreateGoalPageState extends State<CreateGoalPage> {
               child: TextField(
                 controller: _controller,
                 style: const TextStyle(color: Colors.white),
+                cursorColor: Colors.white,
                 decoration: InputDecoration(
                   hintText: 'Example, "Finish the app"',
                   hintStyle: TextStyle(color: Colors.white60),

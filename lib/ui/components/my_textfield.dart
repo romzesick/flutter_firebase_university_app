@@ -31,19 +31,21 @@ class MyTextField extends StatelessWidget {
         onChanged: onChanged,
         controller: controller,
         obscureText: obscureText,
+        cursorColor: Colors.white,
+        style: TextStyle(color: Colors.white),
         decoration: InputDecoration(
           // Obramowanie nieaktywne
           enabledBorder: const OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
+            borderSide: BorderSide(color: Colors.white30),
           ),
 
           // Obramowanie aktywne (gdy pole jest zaznaczone)
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.grey.shade400),
+            borderSide: BorderSide(color: Colors.white30),
           ),
 
           // Tło pola
-          fillColor: Colors.grey.shade200,
+          fillColor: Colors.grey[900],
           filled: true,
 
           // Tekst podpowiedzi

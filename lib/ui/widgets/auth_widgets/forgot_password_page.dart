@@ -21,17 +21,18 @@ class ForgotPasswordPage extends StatelessWidget {
       children: [
         Scaffold(
           appBar: AppBar(
+            foregroundColor: Colors.white,
             title: Text('Reset Password'),
             backgroundColor: Colors.transparent,
           ),
-          backgroundColor: Colors.grey[300],
+          backgroundColor: Colors.black,
           body: SafeArea(
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // Ikona wiadomości e-mail
-                  Icon(Icons.email, size: 100, color: Colors.grey[900]),
+                  Icon(Icons.email, size: 100, color: Colors.green),
                   const SizedBox(height: 50),
 
                   // Instrukcja dla użytkownika
@@ -39,7 +40,7 @@ class ForgotPasswordPage extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: Text(
                       'Write your email and we will send you a password reset link',
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(fontSize: 20, color: Colors.white),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -114,7 +115,7 @@ class _ResetButton extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: Colors.grey[900],
+            color: Colors.green,
             borderRadius: BorderRadius.circular(8),
           ),
           child: Center(

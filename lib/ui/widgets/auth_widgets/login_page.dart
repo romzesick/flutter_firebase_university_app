@@ -26,7 +26,7 @@ class LoginPage extends StatelessWidget {
     return Stack(
       children: [
         Scaffold(
-          backgroundColor: Colors.grey[300],
+          backgroundColor: Colors.black,
           body: SafeArea(
             child: Center(
               child: SingleChildScrollView(
@@ -36,13 +36,13 @@ class LoginPage extends StatelessWidget {
                     const SizedBox(height: 50),
 
                     // Ikona logowania
-                    Icon(Icons.login, size: 100, color: Colors.grey[900]),
+                    Icon(Icons.login, size: 100, color: Colors.green),
                     const SizedBox(height: 50),
 
                     // Powitanie użytkownika
                     Text(
                       'Welcome back you\'ve been missed!',
-                      style: TextStyle(color: Colors.grey[700], fontSize: 16),
+                      style: TextStyle(color: Colors.white, fontSize: 16),
                     ),
                     const SizedBox(height: 25),
 
@@ -126,7 +126,7 @@ class _ForgotPasswordButton extends StatelessWidget {
           alignment: Alignment.centerRight,
           child: Text(
             'Forgot Password?',
-            style: TextStyle(color: Colors.grey[950]),
+            style: TextStyle(color: Colors.white),
           ),
         ),
       ),
@@ -143,7 +143,7 @@ class LoginButton extends StatelessWidget {
     final isLoading = context.select((LoginViewModel model) => model.isLoading);
 
     if (isLoading) {
-      return const CircularProgressIndicator();
+      return const CircularProgressIndicator(color: Colors.white);
     }
     return MyButton(
       signInUp: 'Sign In',
@@ -164,17 +164,17 @@ class _RegisterNow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 25),
       child: Row(
         children: [
-          const Text('Don\'t have an account?'),
+          const Text(
+            'Don\'t have an account?',
+            style: TextStyle(color: Colors.white),
+          ),
           TextButton(
             onPressed:
                 () => Navigator.push(
                   context,
                   MaterialPageRoute(builder: (_) => SignupPage.create()),
                 ),
-            child: Text(
-              'Register Now',
-              style: TextStyle(color: Colors.grey[900]),
-            ),
+            child: Text('Register Now', style: TextStyle(color: Colors.white)),
           ),
         ],
       ),
@@ -188,15 +188,15 @@ class _OrContinueDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Expanded(child: Divider(thickness: 0.5)),
+        const Expanded(child: Divider(thickness: 0.5, color: Colors.white)),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: Text(
             'Or continue with',
-            style: TextStyle(color: Colors.grey[700]),
+            style: TextStyle(color: Colors.white),
           ),
         ),
-        const Expanded(child: Divider(thickness: 0.5)),
+        const Expanded(child: Divider(thickness: 0.5, color: Colors.white)),
       ],
     );
   }

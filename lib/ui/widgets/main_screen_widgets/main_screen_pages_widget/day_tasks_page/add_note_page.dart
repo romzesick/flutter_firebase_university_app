@@ -105,6 +105,7 @@ class _AddNotePageState extends State<AddNotePage>
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
                     style: const TextStyle(color: Colors.white, fontSize: 18),
+                    cursorColor: Colors.white,
                     decoration: InputDecoration(
                       hintText: 'Write your note...',
                       hintStyle: const TextStyle(color: Colors.white60),

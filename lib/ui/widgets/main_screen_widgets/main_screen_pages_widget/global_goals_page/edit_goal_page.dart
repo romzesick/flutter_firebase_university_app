@@ -105,6 +105,7 @@ class _EditGoalPageState extends State<EditGoalPage> {
                     child: TextField(
                       controller: _titleController,
                       style: const TextStyle(color: Colors.white),
+                      cursorColor: Colors.white,
                       decoration: InputDecoration(
                         hintText: 'Edit goal title...',
                         hintStyle: const TextStyle(color: Colors.white60),
@@ -145,6 +146,7 @@ class _EditGoalPageState extends State<EditGoalPage> {
                     child: TextField(
                       controller: _stepController,
                       style: const TextStyle(color: Colors.white),
+                      cursorColor: Colors.white,
                       decoration: InputDecoration(
                         hintText: 'Add or edit step...',
                         hintStyle: const TextStyle(color: Colors.white60),

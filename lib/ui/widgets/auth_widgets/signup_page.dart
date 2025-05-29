@@ -22,7 +22,7 @@ class SignupPage extends StatelessWidget {
     return Stack(
       children: [
         Scaffold(
-          backgroundColor: Colors.grey[300],
+          backgroundColor: Colors.black,
           body: SafeArea(
             child: Center(
               child: SingleChildScrollView(
@@ -32,11 +32,11 @@ class SignupPage extends StatelessWidget {
                     const SizedBox(height: 50),
 
                     // Ikona i nagłówek
-                    Icon(Icons.lock, size: 100, color: Colors.grey[900]),
+                    Icon(Icons.lock, size: 100, color: Colors.green),
                     const SizedBox(height: 50),
                     Text(
                       'Create your account!',
-                      style: TextStyle(color: Colors.grey[700], fontSize: 16),
+                      style: TextStyle(color: Colors.white, fontSize: 16),
                     ),
                     const SizedBox(height: 25),
 
@@ -182,13 +182,13 @@ class _LoginInstead extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text('Already have an account?'),
+          const Text(
+            'Already have an account?',
+            style: TextStyle(color: Colors.white),
+          ),
           TextButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(
-              'Log in now',
-              style: TextStyle(color: Colors.grey[900]),
-            ),
+            child: Text('Log in now', style: TextStyle(color: Colors.white)),
           ),
         ],
       ),

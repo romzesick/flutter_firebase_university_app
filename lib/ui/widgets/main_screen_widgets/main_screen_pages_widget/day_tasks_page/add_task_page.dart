@@ -66,6 +66,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     controller: _controller,
                     focusNode: _focusNode,
                     onChanged: model.changeText,
+                    cursorColor: Colors.white,
                     style: const TextStyle(color: Colors.white),
                     maxLines: 3,
                     decoration: InputDecoration(

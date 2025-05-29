@@ -1,3 +1,4 @@
+import 'package:firebase_flutter_app/ui/components/radial_progress_bar/progres_bar.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -46,44 +47,72 @@ class ProductivityStatsPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Pasek z średnią i filtrem czasowym
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Average: ${(model.averageProductivity * 100).toStringAsFixed(1)}%',
-                          style: const TextStyle(
-                            fontSize: 18,
-                            color: Colors.blue,
-                            fontWeight: FontWeight.w500,
-                          ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.grey[900],
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: Colors.white30, width: 1),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'Average:',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 22,
+                                    ),
+                                  ),
+                                  SizedBox(width: 15),
+                                  SizedBox(
+                                    width: 50,
+                                    height: 50,
+                                    child: RadialPercentWidget(
+                                      percent: model.averageProductivity,
+                                      fillColor: Colors.white30,
+                                      freeColor: Colors.white70,
+                                      lineWidth: 5,
+                                      child: Text(
+                                        '${(model.averageProductivity * 100).toInt()}%',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            DropdownButton<StatsFilter>(
+                              dropdownColor: Colors.grey[900],
+                              value: model.filter,
+                              style: const TextStyle(color: Colors.white),
+                              items:
+                                  StatsFilter.values.map((filter) {
+                                    return DropdownMenuItem(
+                                      value: filter,
+                                      child: Text(filter.name.toUpperCase()),
+                                    );
+                                  }).toList(),
+                              onChanged: (value) => model.updateFilter(value!),
+                            ),
+                          ],
                         ),
-                        DropdownButton<StatsFilter>(
-                          dropdownColor: Colors.grey[900],
-                          value: model.filter,
-                          style: const TextStyle(color: Colors.white),
-                          items:
-                              StatsFilter.values.map((filter) {
-                                return DropdownMenuItem(
-                                  value: filter,
-                                  child: Text(filter.name.toUpperCase()),
-                                );
-                              }).toList(),
-                          onChanged: (value) => model.updateFilter(value!),
-                        ),
-                      ],
+                      ),
                     ),
                     const SizedBox(height: 20),
 
                     // Wykres produktywności
                     Container(
                       decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [Colors.white30, Colors.black],
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                        ),
+                        color: Colors.grey[900],
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: Colors.blue, width: 2),
+                        border: Border.all(color: Colors.white30, width: 1),
                       ),
                       padding: const EdgeInsets.all(12),
                       child: SizedBox(height: 220, child: _buildChart(model)),
@@ -103,14 +132,18 @@ class ProductivityStatsPage extends StatelessWidget {
     final reversed = model.filteredDays.reversed.toList();
     return LineChart(
       LineChartData(
+        maxY: 1.1, // Чуть выше 100%
+        minY: 0.0,
         gridData: FlGridData(
           show: true,
           drawVerticalLine: false,
           horizontalInterval: 0.25,
           getDrawingHorizontalLine:
-              (value) => FlLine(color: Colors.white24, strokeWidth: 1),
+              (value) => FlLine(color: Colors.white30, strokeWidth: 1),
         ),
         titlesData: FlTitlesData(
+          topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+          rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
           bottomTitles: AxisTitles(
             sideTitles: SideTitles(
               showTitles: true,
@@ -118,9 +151,18 @@ class ProductivityStatsPage extends StatelessWidget {
                 int index = value.toInt();
                 if (index < reversed.length) {
                   final date = reversed[index].date;
-                  return Text(
-                    '${date.month}/${date.day}',
-                    style: const TextStyle(color: Colors.white54, fontSize: 10),
+                  return SizedBox(
+                    width: 30, // ограничиваем ширину
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        '${date.month}/${date.day}',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                        ),
+                      ),
+                    ),
                   );
                 }
                 return const SizedBox.shrink();
@@ -131,11 +173,16 @@ class ProductivityStatsPage extends StatelessWidget {
             sideTitles: SideTitles(
               showTitles: true,
               interval: 0.25,
-              getTitlesWidget:
-                  (value, _) => Text(
-                    '${(value * 100).toInt()}%',
-                    style: const TextStyle(color: Colors.white54, fontSize: 10),
-                  ),
+              reservedSize: 30,
+              getTitlesWidget: (value, _) {
+                if (value > 1.0) {
+                  return const SizedBox.shrink(); // скрываем >100%
+                }
+                return Text(
+                  '${(value * 100).toInt()}%',
+                  style: const TextStyle(color: Colors.white, fontSize: 10),
+                );
+              },
             ),
           ),
         ),
@@ -152,10 +199,10 @@ class ProductivityStatsPage extends StatelessWidget {
                     )
                     .toList(),
             isCurved: true,
-            color: Colors.blue,
+            color: Colors.green,
             belowBarData: BarAreaData(
               show: true,
-              color: Colors.blue.withOpacity(0.2),
+              color: Colors.green.withOpacity(0.2),
             ),
             dotData: FlDotData(show: true),
             barWidth: 3,
@@ -177,6 +224,7 @@ class ProductivityStatsPage extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.grey[900],
               borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: Colors.white30, width: 1),
             ),
             child: ListTile(
               title: Text(
@@ -185,7 +233,7 @@ class ProductivityStatsPage extends StatelessWidget {
               ),
               trailing: Text(
                 '${(day.progress * 100).toStringAsFixed(1)}%',
-                style: const TextStyle(color: Colors.blue),
+                style: const TextStyle(color: Colors.green),
               ),
             ),
           ),
