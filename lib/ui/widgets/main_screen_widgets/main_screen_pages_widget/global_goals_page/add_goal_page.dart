@@ -103,7 +103,7 @@ class _CreateGoalPageState extends State<CreateGoalPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Text(
-                '1. Describe global CAREER aim',
+                '1. Describe global aim',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,

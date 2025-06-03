@@ -74,9 +74,13 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       hintStyle: const TextStyle(color: Colors.white60),
                       filled: true,
                       fillColor: Colors.grey[900],
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(15),
-                        borderSide: BorderSide.none,
+                      enabledBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white30),
+                      ),
+
+                      // Obramowanie aktywne (gdy pole jest zaznaczone)
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white30),
                       ),
                     ),
                   ),

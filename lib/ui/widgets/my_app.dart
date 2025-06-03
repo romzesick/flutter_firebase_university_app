@@ -8,13 +8,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-      ),
-      // Widżet startowy, który sprawdza status autoryzacji użytkownika
-      home: AuthWrapperWidget(),
-    );
+    return MaterialApp(title: 'Productivity App', home: AuthWrapperWidget());
   }
 }

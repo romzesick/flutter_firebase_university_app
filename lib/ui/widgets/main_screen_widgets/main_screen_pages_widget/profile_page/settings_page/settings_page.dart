@@ -41,7 +41,6 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
 
   // Flaga do przechowywania stanu powiadomień
   bool _notificationsEnabled = true;
-  bool _darkModeOn = false;
 
   // Włączenie lub wyłączenie powiadomień push
   Future<void> _toggleNotifications(bool value) async {
@@ -56,7 +55,9 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            granted ? '🔔 Уведомления включены' : '⚠️ Разрешение не получено',
+            granted
+                ? '🔔 Notifications turn on'
+                : '⚠️ Permition is not recieved',
           ),
           backgroundColor: granted ? Colors.green : Colors.orange,
         ),
@@ -66,7 +67,7 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
       await FirebaseMessaging.instance.setAutoInitEnabled(false);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('🔕 Уведомления отключены'),
+          content: Text('🔕 Notifications turnd off'),
           backgroundColor: Colors.redAccent,
         ),
       );
@@ -86,15 +87,6 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            SettingsItemsWidget(
-              function: () {},
-              widget: Switch(
-                activeColor: Colors.grey,
-                value: _darkModeOn,
-                onChanged: (value) {},
-              ),
-              text: _darkModeOn == true ? 'Dark Mode' : 'Light Mode',
-            ),
             // Przełącznik powiadomień
             SettingsItemsWidget(
               function: () {},
