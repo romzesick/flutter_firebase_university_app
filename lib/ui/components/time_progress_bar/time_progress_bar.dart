@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
-/// Prosty pasek postępu z animacją i etykietą.
+/// Pasek postępu z etykietą i płynną animacją.
+/// Służy do wizualizacji postępu (dziennego, tygodniowego, miesięcznego)
 ///
-/// Używany do wizualizacji postępu w czasie (np. dzienny, tygodniowy).
+/// Parametry:
+/// - [label] — tekst wyświetlany nad paskiem, opisujący typ postępu,
+/// - [percent] — wartość postępu w zakresie od 0.0 do 1.0.
 class TimeProgressBar extends StatelessWidget {
-  final String label; // Etykieta opisana nad paskiem
-  final double percent; // Wartość procentowa postępu (0.0–1.0)
+  final String label;
+  final double percent;
 
   const TimeProgressBar({
     super.key,

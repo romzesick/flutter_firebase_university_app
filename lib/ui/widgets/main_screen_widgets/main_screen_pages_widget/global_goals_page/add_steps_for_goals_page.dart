@@ -72,7 +72,7 @@ class _CreateGoalStepsPageState extends State<CreateGoalStepsPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Pasek postępu (2/2)
+              /// Pasek postępu (2/2)
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,
@@ -86,6 +86,7 @@ class _CreateGoalStepsPageState extends State<CreateGoalStepsPage> {
                 ),
               ),
 
+              /// podtytuł
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Text(
@@ -96,6 +97,7 @@ class _CreateGoalStepsPageState extends State<CreateGoalStepsPage> {
 
               const SizedBox(height: 10),
 
+              /// tytuł sekcji
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16),
                 child: Text(
@@ -110,7 +112,7 @@ class _CreateGoalStepsPageState extends State<CreateGoalStepsPage> {
 
               const SizedBox(height: 10),
 
-              // Pole tekstowe + przycisk dodania/edycji kroku
+              /// pole tekstowe i przycisk "Add" / "Save"
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
@@ -161,7 +163,7 @@ class _CreateGoalStepsPageState extends State<CreateGoalStepsPage> {
 
               const SizedBox(height: 16),
 
-              // Lista kroków
+              /// lista kroków celu
               Expanded(
                 child: ListView.builder(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -220,7 +222,7 @@ class _CreateGoalStepsPageState extends State<CreateGoalStepsPage> {
                 ),
               ),
 
-              // Przycisk zakończenia
+              /// Przycisk zakończenia
               Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16,

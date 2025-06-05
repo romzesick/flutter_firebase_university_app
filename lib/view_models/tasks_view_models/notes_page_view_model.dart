@@ -3,18 +3,31 @@ import 'package:flutter/material.dart';
 import 'package:firebase_flutter_app/domain/models/day_model.dart';
 import 'package:table_calendar/table_calendar.dart';
 
+/// ViewModel odpowiedzialny za zarządzanie wszystkimi notatkami użytkownika.
+///
+/// Obsługuje:
+/// - ładowanie dni z notatkami z Firestore,
+/// - filtrowanie notatek według miesiąca,
+/// - usuwanie notatek z listy i bazy,
+/// - dostarczanie danych do dropdowna z miesiącami.
 class AllNotesViewModel extends ChangeNotifier {
   final DayService _dayService = DayService();
 
+  /// Wszystkie dni z zapisanymi notatkami
   List<DayModel> _daysWithNotes = [];
+
+  /// Lista przefiltrowanych notatek widocznych w UI
   List<DayModel> _filteredNotes = [];
   List<DayModel> get filteredNotes => _filteredNotes;
 
+  /// Wybrany miesiąc do filtrowania ('All' = bez filtrowania)
   String _selectedMonth = 'All';
   String get selectedMonth => _selectedMonth;
 
+  /// Flaga ładowania danych
   bool isLoading = false;
 
+  /// Pobiera wszystkie dni z notatkami i sortuje je malejąco po dacie
   Future<void> loadDaysWithNotes() async {
     isLoading = true;
     notifyListeners();
@@ -30,6 +43,7 @@ class AllNotesViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Filtruje notatki po wybranym miesiącu (format 'YYYY-MM')
   void filterByMonth(String month) {
     _selectedMonth = month;
 
@@ -51,7 +65,7 @@ class AllNotesViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Получаем список месяцев с заметками
+  /// Zwraca listę dostępnych miesięcy z notatkami w formacie ['All', 'YYYY-MM', ...]
   List<String> get availableMonths {
     final unique =
         _daysWithNotes
@@ -66,6 +80,10 @@ class AllNotesViewModel extends ChangeNotifier {
     return ['All', ...unique];
   }
 
+  /// Usuwa notatkę danego dnia:
+  /// - czyści notatkę w Firestore
+  /// - usuwa dzień z lokalnej listy
+  /// - odświeża aktualną filtrację
   Future<void> deleteNote(DateTime date) async {
     // Удаляем заметку в Firestore
     await _dayService.updateNoteForDay(date, '');

@@ -2,14 +2,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_flutter_app/services/auth_service.dart';
 import 'package:flutter/material.dart';
 
-/// Klasa Event służy do jednorazowego przekazywania komunikatów (np. błędów)
+/// Klasa opakowująca dane typu T.
+/// Służy do jednorazowego odczytu wartości (np. wiadomości o błędach),
+/// aby uniknąć wielokrotnego wyświetlania tego samego komunikatu.
 class Event<T> {
   final T _data;
   bool _hasBeenHandled = false;
 
   Event(this._data);
 
-  /// Zwraca dane tylko raz (jeśli już były pobrane, zwraca null)
+  /// Zwraca dane tylko jeśli nie były jeszcze obsłużone
   T? get dataIfNotHandled {
     if (_hasBeenHandled) {
       return null;
@@ -19,11 +21,12 @@ class Event<T> {
     }
   }
 
-  /// Zwraca dane bez oznaczania ich jako obsłużone
+  /// Zwraca dane niezależnie od stanu użycia
   T get peekData => _data;
 }
 
-/// Stan widoku rejestracji
+/// Reprezentuje stan ViewModelu rejestracji.
+/// Przechowuje dane wejściowe oraz flagi stanu.
 class _SignupViewModelState {
   final String email;
   final String password;
@@ -43,7 +46,7 @@ class _SignupViewModelState {
     this.errorMessage,
   });
 
-  /// Tworzy nową wersję stanu z możliwością nadpisania wybranych pól
+  /// Tworzy kopię obecnego stanu z możliwością nadpisania wybranych pól
   _SignupViewModelState copyWith({
     String? email,
     String? password,
@@ -65,13 +68,16 @@ class _SignupViewModelState {
   }
 }
 
-/// ViewModel obsługujący logikę rejestracji nowego użytkownika
+/// ViewModel obsługujący logikę rejestracji nowego użytkownika.
+/// Komunikuje się z [AuthService], obsługuje błędy i aktualizuje UI.
 class SignUpViewModel extends ChangeNotifier {
   final AuthService _authService = AuthService();
+
+  /// Aktualny stan formularza
   var _state = const _SignupViewModelState();
   _SignupViewModelState get state => _state;
 
-  // Gettery upraszczające dostęp do stanu
+  /// Gettery upraszczające dostęp do stanu
   String get email => _state.email.trim();
   String get password => _state.password.trim();
   String get confirmPassword => _state.confirmPassword.trim();
@@ -79,38 +85,43 @@ class SignUpViewModel extends ChangeNotifier {
   String get age => _state.age.trim();
   bool get isLoading => _state.isLoading;
 
-  // Zmiana poszczególnych pól formularza
+  /// Aktualizuje pole e-maila
   void changeEmail(String value) {
     if (email == value) return;
     _state = _state.copyWith(email: value);
     notifyListeners();
   }
 
+  /// Aktualizuje pole hasła
   void changePassword(String value) {
     if (password == value) return;
     _state = _state.copyWith(password: value);
     notifyListeners();
   }
 
+  /// Aktualizuje pole potwierdzenia hasła
   void changeConfirmPassword(String value) {
     if (confirmPassword == value) return;
     _state = _state.copyWith(confirmPassword: value);
     notifyListeners();
   }
 
+  /// Aktualizuje pole imienia
   void changeName(String value) {
     if (name == value) return;
     _state = _state.copyWith(name: value);
     notifyListeners();
   }
 
+  /// Aktualizuje pole wieku
   void changeAge(String value) {
     if (age == value) return;
     _state = _state.copyWith(age: value);
     notifyListeners();
   }
 
-  /// Obsługuje naciśnięcie przycisku rejestracji
+  /// Obsługuje naciśnięcie przycisku "Sign Up"
+  /// Waliduje dane i przekazuje je do [AuthService]
   Future<bool> onSignUpButtonPressed() async {
     if (email.isEmpty ||
         password.isEmpty ||
@@ -151,14 +162,14 @@ class SignUpViewModel extends ChangeNotifier {
     return false;
   }
 
-  /// Ustawia stan ładowania
+  /// Ustawia flagę ładowania i odświeża UI
   void _setLoading(bool isLoading) {
     if (!hasListeners) return;
     _state = _state.copyWith(isLoading: isLoading);
     notifyListeners();
   }
 
-  /// Wysyła komunikat o błędzie
+  /// Emituje nowy komunikat o błędzie do UI
   void _emitErrorMessage(String message) {
     if (!hasListeners) return;
     _state = _state.copyWith(errorMessage: Event(message));

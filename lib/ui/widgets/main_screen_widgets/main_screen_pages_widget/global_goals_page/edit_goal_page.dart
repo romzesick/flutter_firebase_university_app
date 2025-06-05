@@ -27,7 +27,7 @@ class _EditGoalPageState extends State<EditGoalPage> {
     super.dispose();
   }
 
-  /// Obsługa dodania nowego kroku lub zapisanie edytowanego kroku
+  /// dodanie lub zapisanie kroku
   void _handleStepSubmit(GoalsViewModel model, GoalModel goal) {
     final text = _stepController.text.trim();
     if (text.isEmpty) return;
@@ -47,7 +47,7 @@ class _EditGoalPageState extends State<EditGoalPage> {
     });
   }
 
-  /// Tryb edycji kroku
+  /// przejście w tryb edycji kroku
   void _editStep(GoalStepModel step) {
     setState(() {
       _editingStepId = step.id;
@@ -137,7 +137,7 @@ class _EditGoalPageState extends State<EditGoalPage> {
               ),
             ),
 
-            // Dodanie lub zapisanie kroku
+            /// dodanie lub edycja kroku
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               child: Row(
@@ -172,7 +172,7 @@ class _EditGoalPageState extends State<EditGoalPage> {
               ),
             ),
 
-            // Lista kroków do edycji lub usunięcia
+            /// lista kroków z opcją edycji lub usunięcia
             Expanded(
               child: ListView.builder(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -214,7 +214,7 @@ class _EditGoalPageState extends State<EditGoalPage> {
               ),
             ),
 
-            // Przycisk zakończenia edycji i usunięcia celu
+            /// zakończenie edycji i usunięcie celu
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               child: Column(

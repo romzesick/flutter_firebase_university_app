@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 
+/// Przyciski do zatwierdzania formularzy (logowania lub rejestracji).
 ///
-/// P R Z Y C I S K
-///
-/// Uniwersalny przycisk używany w formularzach logowania i rejestracji.
-///
+/// Stylizowany zielony przycisk z tekstem.
+/// Obsługuje kliknięcie poprzez funkcję [onTap].
 class MyButton extends StatelessWidget {
-  /// Tekst wyświetlany na przycisku (np. "Sign In" lub "Sign Up")
+  /// Tekst widoczny na przycisku (np. "Sign In", "Sign Up").
   final String signInUp;
 
-  /// Funkcja wykonywana po kliknięciu przycisku
+  /// Funkcja wykonywana po kliknięciu przycisku.
   final Function()? onTap;
 
   const MyButton({super.key, required this.onTap, required this.signInUp});

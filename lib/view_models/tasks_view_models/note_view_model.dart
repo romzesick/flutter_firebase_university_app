@@ -3,6 +3,7 @@ import 'package:firebase_flutter_app/services/tasks_servise.dart';
 
 /// ViewModel odpowiedzialny za obsługę notatek użytkownika.
 /// Ładuje i zapisuje notatki powiązane z konkretną datą.
+/// Wykorzystuje [DayService] do komunikacji z bazą danych.
 class NoteViewModel extends ChangeNotifier {
   final DayService _dayService = DayService();
 
@@ -11,15 +12,19 @@ class NoteViewModel extends ChangeNotifier {
   bool _isLoading = false;
   String? _error;
 
-  /// Inicjalizacja z konkretną datą
+  /// Inicjalizacja ViewModelu z konkretną datą
   NoteViewModel(this._date);
 
-  // Gettery do wykorzystania w UI
+  /// aktualna treść notatki
   String get note => _note;
+
+  /// czy trwa ładowanie notatki
   bool get isLoading => _isLoading;
+
+  /// komunikat błędu (jeśli wystąpił)
   String? get error => _error;
 
-  /// Ładowanie notatki z bazy (dla danego dnia)
+  /// Ładowanie notatki z Firestore na podstawie daty
   Future<void> loadNote() async {
     _isLoading = true;
     notifyListeners();
@@ -33,7 +38,7 @@ class NoteViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Aktualizacja notatki — natychmiast w UI, potem zapis do bazy
+  /// Zmienia notatkę w UI i zapisuje ją w Firestore
   Future<void> updateNote(String newNote) async {
     _note = newNote;
     notifyListeners();
@@ -41,11 +46,11 @@ class NoteViewModel extends ChangeNotifier {
       await _dayService.updateNoteForDay(_date, newNote);
     } catch (e) {
       _error = 'Failed to save note: $e';
-      notifyListeners(); // powiadamiamy o błędzie
+      notifyListeners();
     }
   }
 
-  /// Czyszczenie błędu
+  /// Usuwa aktualny błąd i odświeża UI
   void clearError() {
     _error = null;
     notifyListeners();

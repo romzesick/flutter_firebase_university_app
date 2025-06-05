@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 
-///
-/// P R Z Y C I S K   S P O Ł E C Z N O Ś C I O W Y
-///
 /// Kwadratowy kafelek wykorzystywany do logowania przez Google lub Apple
-///
 class SquareTile extends StatelessWidget {
   /// Ścieżka do ikony (np. "images/google.png")
   final String imagePath;

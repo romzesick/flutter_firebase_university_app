@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_flutter_app/services/friend_service.dart';
 
-/// ViewModel zarządzający listą użytkowników i zaproszeniami do znajomych.
+/// viewmodel do zarządzania listą użytkowników i relacjami znajomości
 ///
-/// Obsługuje:
-/// - pobieranie wszystkich użytkowników,
-/// - filtrowanie po e-mailu,
-/// - sprawdzanie statusu (znajomy, oczekujący),
-/// - wysyłanie i anulowanie zaproszeń,
-/// - usuwanie znajomych.
+/// odpowiada za:
+/// - pobranie wszystkich użytkowników (bez siebie),
+/// - filtrowanie wyników wyszukiwania po e-mailu,
+/// - obsługę relacji: znajomy / oczekujące zaproszenie,
+/// - wysyłanie, anulowanie zaproszeń i usuwanie znajomych
 class FriendsListViewModel extends ChangeNotifier {
   final FriendService _friendService = FriendService();
   final TextEditingController searchController = TextEditingController();

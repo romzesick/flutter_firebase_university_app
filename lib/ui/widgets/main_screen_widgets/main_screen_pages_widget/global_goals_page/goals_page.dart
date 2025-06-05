@@ -10,6 +10,7 @@ import 'package:firebase_flutter_app/ui/components/radial_progress_bar/progres_b
 
 /// Strona prezentująca długoterminowe cele.
 /// Pozwala dodawać nowe cele, oznaczać kroki jako wykonane oraz przechodzić do edycji.
+/// Widok zarządzany przez [GoalsViewModel].
 class GoalsPageWidget extends StatefulWidget {
   const GoalsPageWidget({super.key});
 
@@ -23,20 +24,21 @@ class _GoalsPageWidgetState extends State<GoalsPageWidget> {
   @override
   void initState() {
     super.initState();
-    // Ładujemy cele po uruchomieniu widżetu
+
+    /// Ładowanie celów przy starcie
     Future.microtask(() {
       context.read<GoalsViewModel>().loadGoals();
     });
   }
 
-  /// Zaznacz/odznacz cel
+  /// Zmiana zaznaczenia celu
   void _toggleGoalSelection(String goalId) {
     setState(() {
       selectedGoalId = selectedGoalId == goalId ? null : goalId;
     });
   }
 
-  /// Nawigacja do edycji zaznaczonego celu
+  /// Nawigacja do ekranu edycji celu
   void _navigateToDetails() async {
     if (selectedGoalId != null) {
       await Navigator.push(
@@ -131,7 +133,7 @@ class _GoalsPageWidgetState extends State<GoalsPageWidget> {
         ),
       ),
 
-      // FAB do dodania nowego celu lub edycji zaznaczonego
+      /// FloatingActionButton umożliwiający dodanie nowego celu lub edycję zaznaczonego
       floatingActionButton: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: FloatingActionButton(

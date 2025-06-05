@@ -5,11 +5,17 @@ import 'package:firebase_flutter_app/domain/models/day_model.dart';
 import 'package:firebase_flutter_app/domain/models/task_model.dart';
 import 'package:uuid/uuid.dart';
 
-/// ViewModel odpowiedzialny za logikę zarządzania zadaniami dnia:
-/// - ładowanie danych z dnia
-/// - dodawanie, usuwanie, edytowanie zadań
-/// - postęp i produktywność
-/// - notatki i animacje sukcesu
+/// ViewModel odpowiedzialny za zarządzanie zadaniami dziennymi.
+///
+/// Zawiera logikę:
+/// – ładowania danych dnia z bazy,
+/// – dodawania, usuwania i edycji zadań,
+/// – zapisu notatek,
+/// – liczenia postępu oraz średniej produktywności,
+/// – pokazywania animacji ukończenia.
+///
+/// Używa [DayService] do operacji na danych dnia
+/// oraz [UserStatsService] do aktualizacji globalnej produktywności.
 class DayTasksViewModel extends ChangeNotifier {
   final UserStatsService _statsService = UserStatsService();
   final DayService _dayService = DayService();
@@ -22,7 +28,7 @@ class DayTasksViewModel extends ChangeNotifier {
   List<TaskModel> _tasks = [];
   double? _totalProductivity;
 
-  // GETTERY
+  // Gettery upraszczające dostęp do stanu
   double? get totalProductivity => _totalProductivity;
   List<TaskModel> get tasks => _tasks;
   DateTime get selectedDate => _selectedDate;

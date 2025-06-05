@@ -6,6 +6,7 @@ import 'package:firebase_flutter_app/services/goals_service.dart';
 /// ViewModel odpowiedzialny za zarządzanie celami.
 /// Obsługuje dodawanie, edycję, usuwanie celów i kroków,
 /// przelicza postęp i aktualizuje dane w Firestore.
+/// Dane przechowywane są w Firestore za pomocą [GoalsService].
 class GoalsViewModel extends ChangeNotifier {
   final GoalsService _goalsService = GoalsService();
 
@@ -18,6 +19,7 @@ class GoalsViewModel extends ChangeNotifier {
   String? get error => _error;
   bool get isLoading => _isLoading;
 
+  /// Zwalnianie zasobów
   @override
   void dispose() {
     _isDisposed = true;

@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 /// - przejście do strony z zaproszeniami do znajomych (z licznikiem powiadomień),
 /// - dodawanie znajomych.
 ///
-/// Widget wyświetla ranking użytkownika i jego znajomych na podstawie produktywności.
+/// Widget wyświetla ranking użytkownika i jego znajomych na podstawie produktywności
 class FriendsProgressWidget extends StatefulWidget {
   const FriendsProgressWidget({super.key});
 

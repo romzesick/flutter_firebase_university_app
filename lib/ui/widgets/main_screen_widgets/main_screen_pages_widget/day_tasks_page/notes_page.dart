@@ -6,7 +6,17 @@ import 'package:provider/provider.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_flutter_app/ui/widgets/main_screen_widgets/main_screen_pages_widget/day_tasks_page/add_note_page.dart';
 
+/// Strona przeglądania wszystkich notatek zapisanych przez użytkownika.
+///
+/// Umożliwia:
+/// - wyświetlanie notatek z podziałem na miesiące,
+/// - filtrowanie po miesiącu,
+/// - usuwanie notatek gestem przesunięcia (Slidable),
+/// - przejście do edycji notatki po kliknięciu.
+///
+/// Korzysta z [AllNotesViewModel], który ładuje i filtruje dni z notatkami.
 class NotesPageWidget extends StatelessWidget {
+  /// Tworzy stronę z załadowanym [AllNotesViewModel]
   static Widget create() {
     return ChangeNotifierProvider(
       create: (_) => AllNotesViewModel()..loadDaysWithNotes(),
@@ -28,13 +38,14 @@ class NotesPageWidget extends StatelessWidget {
         title: const Text('All Notes', style: TextStyle(color: Colors.white)),
       ),
       body:
+          /// Spinner ładowania lub lista notatek
           model.isLoading
               ? const Center(
                 child: CircularProgressIndicator(color: Colors.white),
               )
               : Column(
                 children: [
-                  _buildMonthDropdown(model),
+                  _buildMonthDropdown(model), // rozwijane filtrowanie miesięcy
                   Expanded(
                     child: ListView.builder(
                       padding: const EdgeInsets.all(12),
@@ -52,6 +63,7 @@ class NotesPageWidget extends StatelessWidget {
                             child: Slidable(
                               key: ValueKey(day.date.toIso8601String()),
 
+                              /// Usuwanie notatki
                               endActionPane: ActionPane(
                                 dismissible: DismissiblePane(
                                   onDismissed: () async {
@@ -71,6 +83,8 @@ class NotesPageWidget extends StatelessWidget {
                                   ),
                                 ],
                               ),
+
+                              /// Widok kafelka notatki
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: Colors.grey[900],
@@ -118,6 +132,9 @@ class NotesPageWidget extends StatelessWidget {
   }
 }
 
+/// Dropdown do filtrowania notatek po miesiącu.
+///
+/// Wyświetla dostępne miesiące oraz opcję „All Notes”.
 Widget _buildMonthDropdown(AllNotesViewModel model) {
   return Padding(
     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),

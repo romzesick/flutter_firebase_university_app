@@ -4,15 +4,15 @@ import 'package:firebase_flutter_app/view_models/profile_view_models/friends_vie
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-/// Strona pozwalająca przeszukiwać wszystkich użytkowników aplikacji
-/// i dodawać ich jako znajomych.
+/// strona listy znajomych
 ///
-/// Funkcjonalności:
-/// - Wyszukiwanie użytkowników po e-mailu,
-/// - Dodawanie i usuwanie znajomych,
-/// - Anulowanie wysłanego zaproszenia,
-/// - Oznaczenie statusu znajomości (już znajomy / oczekujące / możliwe do dodania),
-/// - Odświeżenie rankingu po usunięciu znajomego.
+/// umożliwia:
+/// - wyszukiwanie użytkowników po e-mailu,
+/// - wysyłanie zaproszeń do znajomych,
+/// - anulowanie zaproszenia,
+/// - usuwanie znajomych,
+/// - oznaczenie aktualnego statusu znajomości,
+/// - odświeżenie rankingu po zmianach
 class FriendsListPage extends StatelessWidget {
   const FriendsListPage({super.key, required this.friendsRankingViewModel});
 

@@ -5,11 +5,11 @@ import 'package:provider/provider.dart';
 import 'package:firebase_flutter_app/view_models/tasks_view_models/note_view_model.dart';
 
 /// Strona dodawania lub edycji notatki do konkretnego dnia.
-/// Obsługuje automatyczne zapisywanie z opóźnieniem (debounce).
+/// Korzysta z [NoteViewModel] do zarządzania logiką i danymi.
 class AddNotePage extends StatefulWidget {
   const AddNotePage({super.key});
 
-  /// Fabryczna metoda do przekazania daty i utworzenia widoku
+  /// Fabryczna metoda do przekazania daty i utworzenia widoku z ViewModel
   static Widget create(DateTime date) {
     return ChangeNotifierProvider(
       create: (_) => NoteViewModel(date)..loadNote(),
@@ -32,10 +32,10 @@ class _AddNotePageState extends State<AddNotePage>
     super.initState();
     _controller = TextEditingController();
 
-    // Słuchamy zmian tekstu w polu
+    /// nasłuchiwanie zmian w polu tekstowym
     _controller.addListener(_onNoteChanged);
 
-    // Pokazujemy klawiaturę z opóźnieniem po załadowaniu strony
+    /// automatyczne skupienie kursora po otwarciu strony
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(const Duration(milliseconds: 300), () {
         if (mounted) {
@@ -45,7 +45,7 @@ class _AddNotePageState extends State<AddNotePage>
     });
   }
 
-  /// Obsługa debounced zapisu notatki — zapis po 500ms bez pisania
+  /// obsługuje zapis z opóźnieniem (500ms od ostatniej zmiany)
   void _onNoteChanged() {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
 
@@ -55,13 +55,12 @@ class _AddNotePageState extends State<AddNotePage>
     });
   }
 
+  /// wypełnia pole notatki istniejącym tekstem (po załadowaniu modelu)
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
     final model = context.watch<NoteViewModel>();
-
-    // Inicjalne wypełnienie pola jeśli notatka istnieje
     if (_controller.text.isEmpty && model.note.isNotEmpty) {
       _controller.text = model.note;
     }
@@ -87,7 +86,7 @@ class _AddNotePageState extends State<AddNotePage>
         title: const Text('Your Note', style: TextStyle(color: Colors.white)),
       ),
 
-      // Główna zawartość: pole tekstowe lub spinner jeśli ładowanie
+      /// główna zawartość — pole tekstowe lub spinner
       body:
           model.isLoading
               ? const Center(
@@ -114,8 +113,6 @@ class _AddNotePageState extends State<AddNotePage>
                       enabledBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white30),
                       ),
-
-                      // Obramowanie aktywne (gdy pole jest zaznaczone)
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white30),
                       ),

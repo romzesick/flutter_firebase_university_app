@@ -3,15 +3,14 @@ import 'package:firebase_flutter_app/view_models/profile_view_models/ranks_view_
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-/// Strona wyświetlająca wszystkie dostępne rangi użytkownika.
+/// ekran z listą wszystkich rang użytkownika
 ///
-/// Pokazuje listę rang w zależności od minimalnej liczby punktów.
-/// Jeśli użytkownik osiągnął daną rangę, jest ona podświetlona.
-/// Dane pobierane są z `RankViewModel`, który ładuje listę z Firestore.
+/// pokazuje rangi w kolejności od najniższych do najwyższych
+/// podświetla rangi osiągnięte przez użytkownika
 class ViewRangsWidget extends StatelessWidget {
   const ViewRangsWidget({super.key});
 
-  /// Metoda fabryczna z podłączeniem `RankViewModel`.
+  /// tworzy widget z podłączonym [RankViewModel]
   static Widget create() {
     return ChangeNotifierProvider(
       create: (_) => RankViewModel()..loadRanks(),

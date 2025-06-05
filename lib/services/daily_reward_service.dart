@@ -4,7 +4,7 @@ import 'package:firebase_flutter_app/domain/models/daily_reward_model.dart';
 import 'package:firebase_flutter_app/services/rank_service.dart';
 
 /// Serwis odpowiedzialny za codzienne nagrody użytkownika.
-/// Obsługuje aktualizację streaków, przyznawanie punktów oraz komunikację z bazą danych.
+/// Obsługuje aktualizację streaków, przyznawanie punktów oraz komunikację z bazą danych
 class DailyRewardService {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;

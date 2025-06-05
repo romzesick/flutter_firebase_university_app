@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-/// Serwis odpowiedzialny za autoryzację użytkownika i komunikację z Firebase
+/// Serwis odpowiedzialny za autoryzację użytkownika i komunikację z Firebasee
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;

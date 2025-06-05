@@ -2,13 +2,27 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-/// Widżet pokazujący animowany okrąg postępu procentowego.
+///
+/// Animowany okrąg postępu z dynamicznym kolorem.
+///
+/// Używany do wizualizacji procentowej wartości (np. produktywności)
+/// w formie animowanego okręgu z opcjonalnym tekstem w środku.
+///
+/// Parametry:
+/// - [child] — widżet wewnątrz koła (np. tekst z wartością),
+/// - [percent] — wartość postępu w zakresie 0.0–1.0,
+/// - [fillColor] — kolor tła wewnątrz okręgu,
+/// - [freeColor] — kolor niewypełnionej części łuku,
+/// - [lineWidth] — grubość łuku.
+///
+/// Wewnętrznie korzysta z [TweenAnimationBuilder] do płynnej animacji.
+///
 class RadialPercentWidget extends StatelessWidget {
-  final Widget child; // Element w środku koła (np. tekst)
-  final double percent; // Wartość procentowa (0.0–1.0)
-  final Color fillColor; // Kolor tła (środek koła)
-  final Color freeColor; // Kolor niewypełnionej części łuku
-  final double lineWidth; // Grubość łuku
+  final Widget child;
+  final double percent;
+  final Color fillColor;
+  final Color freeColor;
+  final double lineWidth;
 
   const RadialPercentWidget({
     super.key,
@@ -40,7 +54,6 @@ class RadialPercentWidget extends StatelessWidget {
                   lineWidth: lineWidth,
                 ),
               ),
-              // Środkowy element (np. tekst %)
               Padding(
                 padding: const EdgeInsets.all(11.0),
                 child: Center(child: childInside),
@@ -48,13 +61,13 @@ class RadialPercentWidget extends StatelessWidget {
             ],
           );
         },
-        child: child, // <-- aby tekst się nie odświeżał przy każdej klatce
+        child: child, // aby tekst się nie odświeżał przy każdej klatce
       ),
     );
   }
 }
 
-/// Klasa odpowiedzialna za rysowanie łuków i tła
+/// Klasa odpowiedzialna za rysowanie elementów koła postępu.
 class MyPainter extends CustomPainter {
   final Color fillColor;
   final Color freeColor;

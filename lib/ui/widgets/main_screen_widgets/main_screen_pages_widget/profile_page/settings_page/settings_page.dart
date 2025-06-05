@@ -4,7 +4,13 @@ import 'package:firebase_flutter_app/ui/widgets/main_screen_widgets/main_screen_
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
-// Widżet ustawień aplikacji z opcją wylogowania, usunięcia konta i przejścia do strony "O aplikacji"
+/// strona ustawień aplikacji
+///
+/// umożliwia:
+/// - przełączanie powiadomień push,
+/// - wylogowanie się z konta,
+/// - usunięcie konta,
+/// - przejście do strony "O aplikacji"
 class SettingsPageWidget extends StatefulWidget {
   const SettingsPageWidget({super.key});
 
@@ -13,7 +19,7 @@ class SettingsPageWidget extends StatefulWidget {
 }
 
 class _SettingsPageWidgetState extends State<SettingsPageWidget> {
-  // Wylogowanie użytkownika i przejście do ekranu logowania
+  /// wylogowanie użytkownika
   void _logUserOut() {
     FirebaseAuth.instance.signOut();
     if (context.mounted) {
@@ -24,7 +30,7 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
     }
   }
 
-  // Usunięcie konta użytkownika i wylogowanie
+  /// usunięcie konta i przekierowanie do logowania
   Future<void> _deleteAccountLogOut() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
@@ -39,7 +45,7 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
     }
   }
 
-  // Flaga do przechowywania stanu powiadomień
+  /// przełącznik powiadomień push
   bool _notificationsEnabled = true;
 
   // Włączenie lub wyłączenie powiadomień push
@@ -80,14 +86,14 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
       backgroundColor: Colors.black,
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Settings'), // Tytuł AppBar
+        title: Text('Settings'),
         foregroundColor: Colors.white,
         backgroundColor: Colors.transparent,
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Przełącznik powiadomień
+            /// przełącznik powiadomień
             SettingsItemsWidget(
               function: () {},
               widget: Switch(
@@ -97,7 +103,8 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
               ),
               text: 'Notifications',
             ),
-            // Przejście do strony "O aplikacji"
+
+            /// przejście do strony o aplikacji
             SettingsItemsWidget(
               function: () {
                 Navigator.push(
@@ -108,13 +115,15 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
               widget: Icon(Icons.info, color: Colors.white),
               text: 'About App',
             ),
-            // Przycisk wylogowania
+
+            /// przycisk wylogowania
             SettingsItemsWidget(
               function: _logUserOut,
               widget: Icon(Icons.logout, color: Colors.white),
               text: 'Log Out',
             ),
-            // Przycisk usuwania konta
+
+            /// przycisk usunięcia konta
             SettingsItemsWidget(
               function: _deleteAccountLogOut,
               widget: Icon(Icons.delete, color: Colors.white),
@@ -127,7 +136,7 @@ class _SettingsPageWidgetState extends State<SettingsPageWidget> {
   }
 }
 
-// Widżet pojedynczego elementu ustawień (np. przełącznik, przycisk)
+/// pojedynczy element ustawień (tekst + akcja)
 class SettingsItemsWidget extends StatelessWidget {
   final Function function; // Akcja po kliknięciu
   final Widget widget; // Ikona lub przełącznik

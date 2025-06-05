@@ -45,7 +45,7 @@ class UserStatsService {
     });
   }
 
-  /// Pobiera ostatnio zapisaną produktywność z Firestore (bez przeliczania)
+  /// Pobiera ostatnio zapisaną produktywność z  Firestore (bez przeliczania)
   Future<double?> getCachedTotalProductivity() async {
     final userDoc =
         await FirebaseFirestore.instance

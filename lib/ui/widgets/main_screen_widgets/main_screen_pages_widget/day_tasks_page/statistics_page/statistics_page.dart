@@ -6,12 +6,19 @@ import 'package:firebase_flutter_app/domain/models/day_model.dart';
 import 'package:firebase_flutter_app/services/tasks_servise.dart';
 import 'package:firebase_flutter_app/services/stats_service.dart';
 
-// Strona pokazująca statystyki produktywności użytkownika (średnia, wykres, lista dni)
-
+/// Strona statystyk produktywności użytkownika.
+///
+/// Pokazuje:
+/// - średnią produktywność z danego zakresu czasu (tydzień / miesiąc / rok),
+/// - wykres postępu dziennego,
+/// - listę dni z procentem wykonania zadań.
+///
+/// Wykorzystuje dane z Firestore i serwisu [UserStatsService].
+/// Logika filtrowania znajduje się w [_StatsViewModel].
 class ProductivityStatsPage extends StatelessWidget {
   const ProductivityStatsPage({super.key});
 
-  // Tworzy stronę i podłącza ViewModel do Provider'a
+  /// Tworzy stronę i automatycznie ładuje dane przez ViewModel
   static Widget create() {
     return ChangeNotifierProvider(
       create:
@@ -46,7 +53,7 @@ class ProductivityStatsPage extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Pasek z średnią i filtrem czasowym
+                    /// Pasek ze średnią produktywnością i filtrem czasowym
                     Container(
                       decoration: BoxDecoration(
                         color: Colors.grey[900],
@@ -88,6 +95,7 @@ class ProductivityStatsPage extends StatelessWidget {
                               ),
                             ),
 
+                            /// Dropdown z wyborem zakresu (tydzień/miesiąc/rok)
                             DropdownButton<StatsFilter>(
                               dropdownColor: Colors.grey[900],
                               value: model.filter,
@@ -127,7 +135,7 @@ class ProductivityStatsPage extends StatelessWidget {
     );
   }
 
-  // Rysuje wykres liniowy postępu dziennego
+  /// Rysuje wykres liniowy postępu dziennego
   Widget _buildChart(_StatsViewModel model) {
     final reversed = model.filteredDays.reversed.toList();
     return LineChart(
@@ -212,7 +220,7 @@ class ProductivityStatsPage extends StatelessWidget {
     );
   }
 
-  // Tworzy listę z datą i procentem wykonania zadań
+  /// Lista z datami i wartością progresu
   Widget _buildDayList(_StatsViewModel model) {
     return ListView.builder(
       itemCount: model.filteredDays.length,
@@ -243,9 +251,18 @@ class ProductivityStatsPage extends StatelessWidget {
   }
 }
 
-// Filtr czasowy dla statystyk: tydzień, miesiąc, rok
+/// Filtr czasowy wykorzystywany do statystyk produktywności.
 enum StatsFilter { week, month, year }
 
+/// ViewModel do strony statystyk produktywności.
+///
+/// Ładuje dane z Firestore przez [DayService] i [UserStatsService].
+/// Przechowuje listę wszystkich dni z zadaniami oraz filtrowaną listę
+/// na podstawie wybranego zakresu czasu ([StatsFilter]).
+///
+/// Oblicza również średnią produktywność użytkownika.
+///
+/// Używany w [ProductivityStatsPage].
 class _StatsViewModel extends ChangeNotifier {
   final _dayService = DayService();
   final _statsService = UserStatsService();

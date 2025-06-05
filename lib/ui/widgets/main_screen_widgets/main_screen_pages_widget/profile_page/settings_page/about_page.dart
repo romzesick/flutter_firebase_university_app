@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-// Ekran informacyjny "O aplikacji"
+/// Ekran informacyjny "O aplikacji"
 class AboutPage extends StatelessWidget {
   const AboutPage({super.key});
 
@@ -9,19 +9,18 @@ class AboutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black, // Tło całej strony
+      backgroundColor: Colors.black,
       appBar: AppBar(
-        title: const Text('About App'), // Tytuł w AppBarze
+        title: const Text('About App'),
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.white,
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20), // Odstęp wewnętrzny
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: const [
-            // Nagłówek
             Text(
               'About This App',
               style: TextStyle(
@@ -30,8 +29,7 @@ class AboutPage extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 10), // Przerwa
-            // Opis funkcji aplikacji
+            SizedBox(height: 10),
             Text(
               'This app is designed to help you track and improve your daily productivity. '
               'You can set tasks, monitor progress, create long-term goals, and even compete with friends.\n\n'
@@ -45,11 +43,10 @@ class AboutPage extends StatelessWidget {
               style: TextStyle(
                 color: Colors.white70,
                 fontSize: 16,
-                height: 1.4, // Odstępy między liniami
+                height: 1.4,
               ),
             ),
-            SizedBox(height: 20), // Przerwa
-            // Wersja aplikacji
+            SizedBox(height: 20),
             Text('Version 1.0.0', style: TextStyle(color: Colors.white38)),
           ],
         ),

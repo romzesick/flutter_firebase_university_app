@@ -9,11 +9,12 @@ import 'package:provider/provider.dart';
 import '../../components/my_login_button.dart';
 import '../../components/my_textfield.dart';
 
-/// Ekran logowania – formularz logowania, przyciski i obsługa błędów
+/// Główna strona logowania użytkownika.
+/// Logika logowania znajduje się w [LoginViewModel].
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
-  /// Metoda fabryczna do stworzenia strony z odpowiednim ViewModel
+  /// Metoda fabryczna do stworzenia strony logowania z dostarczonym [LoginViewModel].
   static Widget create() {
     return ChangeNotifierProvider(
       create: (context) => LoginViewModel(),
@@ -35,42 +36,42 @@ class LoginPage extends StatelessWidget {
                   children: [
                     const SizedBox(height: 50),
 
-                    // Ikona logowania
+                    /// Ikona logowania
                     Icon(Icons.login, size: 100, color: Colors.green),
                     const SizedBox(height: 50),
 
-                    // Powitanie użytkownika
+                    /// Powitanie użytkownika
                     Text(
                       'Welcome back you\'ve been missed!',
                       style: TextStyle(color: Colors.white, fontSize: 16),
                     ),
                     const SizedBox(height: 25),
 
-                    // Pole email
+                    /// Pole email
                     _EmailField(),
                     const SizedBox(height: 10),
 
-                    // Pole hasło
+                    /// Pole hasło
                     _PasswordField(),
                     const SizedBox(height: 10),
 
-                    // Przycisk: Zapomniałem hasła
+                    /// Przycisk: Zapomniałem hasła
                     _ForgotPasswordButton(),
                     const SizedBox(height: 25),
 
-                    // Przycisk logowania
+                    /// Przycisk logowania
                     const LoginButton(),
                     const SizedBox(height: 10),
 
-                    // Przycisk rejestracji
+                    /// Przycisk rejestracji
                     _RegisterNow(),
                     const SizedBox(height: 35),
 
-                    // Linia podziału
+                    /// Separator
                     _OrContinueDivider(),
                     const SizedBox(height: 50),
 
-                    // Logowanie przez Google/Apple
+                    /// Logowanie przez Google/Apple
                     const _SocialLoginRow(),
                   ],
                 ),
@@ -79,7 +80,7 @@ class LoginPage extends StatelessWidget {
           ),
         ),
 
-        // Wyświetlanie błędów logowania
+        /// Komponent błędów logowania (SnackBar)
         _ErrorHandler(),
       ],
     );
@@ -134,7 +135,8 @@ class _ForgotPasswordButton extends StatelessWidget {
   }
 }
 
-/// Przycisk logowania – pokazuje spinner podczas ładowania
+/// Główny przycisk logowania.
+/// Pokazuje spinner, jeśli [LoginViewModel.isLoading] jest aktywny.
 class LoginButton extends StatelessWidget {
   const LoginButton({super.key});
 
@@ -156,7 +158,7 @@ class LoginButton extends StatelessWidget {
   }
 }
 
-/// Sekcja z przyciskiem „Zarejestruj się”
+/// Rząd z napisem „Don’t have an account?” i przyciskiem do rejestracji.
 class _RegisterNow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -219,7 +221,7 @@ class _SocialLoginRow extends StatelessWidget {
   }
 }
 
-/// Komponent odpowiedzialny za wyświetlanie błędów logowania
+/// Komponent odpowiedzialny za wyświetlanie błędów logowania jako SnackBar.
 class _ErrorHandler extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -227,7 +229,6 @@ class _ErrorHandler extends StatelessWidget {
       builder: (_, model, __) {
         final message = model.state.errorMessage?.dataIfNotHandled;
         if (message != null) {
-          // Pokazanie SnackBar z błędem
           WidgetsBinding.instance.addPostFrameCallback((_) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text(message), backgroundColor: Colors.red),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+///ViewModel dla zmiany theme, ale nie korzystam z tego
 class ThemeProvider extends ChangeNotifier {
   bool _isDarkMode = true;
 

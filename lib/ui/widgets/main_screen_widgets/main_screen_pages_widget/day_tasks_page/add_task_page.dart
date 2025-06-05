@@ -3,13 +3,11 @@ import 'package:firebase_flutter_app/view_models/tasks_view_models/add_tasks_vie
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-/// Strona dodawania lub edytowania zadania.
-/// Obsługuje:
-/// - wstępne ustawienie tekstu,
-/// - zapis zadania,
-/// - walidację i blokadę przycisku, gdy pole puste.
+/// Strona dodawania lub edytowania zadania
+/// Logika zapisu i stanu znajduje się w [AddTaskViewModel].
 class AddTaskPage extends StatefulWidget {
-  final TaskModel? existingTask; // <-- jeśli nie null, to edycja
+  /// jeśli nie null, to edycja
+  final TaskModel? existingTask;
 
   const AddTaskPage({super.key, this.existingTask});
 
@@ -19,22 +17,18 @@ class AddTaskPage extends StatefulWidget {
 
 class _AddTaskPageState extends State<AddTaskPage> {
   final FocusNode _focusNode = FocusNode();
-  late final TextEditingController _controller; // <-- kontroler pola tekstowego
+  late final TextEditingController _controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = TextEditingController(); // <-- inicjalizacja kontrolera
+    _controller = TextEditingController();
 
-    // Po zbudowaniu widoku
+    /// Inicjalizacja modelu i ustawienie początkowego tekstu
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final model = context.read<AddTaskViewModel>();
       model.init(widget.existingTask);
-
-      // Ustawiamy tekst w polu jeśli edytujemy
       _controller.text = model.text;
-
-      // Automatyczne ustawienie kursora w polu
       FocusScope.of(context).requestFocus(_focusNode);
     });
   }
@@ -61,7 +55,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
               padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
-                  // Pole tekstowe do wpisania treści zadania
+                  /// Pole tekstowe do wpisania treści zadania
                   TextField(
                     controller: _controller,
                     focusNode: _focusNode,
@@ -77,8 +71,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       enabledBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white30),
                       ),
-
-                      // Obramowanie aktywne (gdy pole jest zaznaczone)
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white30),
                       ),
@@ -86,7 +78,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   ),
                   const SizedBox(height: 30),
 
-                  // Przycisk zapisu zadania
+                  /// Przycisk zapisu zadania (lub edycji)
                   ElevatedButton.icon(
                     onPressed:
                         model.isLoading
@@ -114,7 +106,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     ),
                   ),
 
-                  // Wyświetlenie błędu (jeśli istnieje)
+                  /// Wyświetlenie błędu (jeśli istnieje)
                   if (model.error != null) ...[
                     const SizedBox(height: 20),
                     Text(
@@ -128,7 +120,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
           ),
         ),
 
-        // Nakładka ładowania (ciemne tło + spinner)
+        /// Nakładka ładowania (ciemne tło + spinner)
         if (model.isLoading)
           const Opacity(
             opacity: 0.6,

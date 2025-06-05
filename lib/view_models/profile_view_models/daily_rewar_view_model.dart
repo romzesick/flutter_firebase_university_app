@@ -3,12 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_flutter_app/domain/models/daily_reward_model.dart';
 import 'package:firebase_flutter_app/services/daily_reward_service.dart';
 
-/// ViewModel odpowiedzialny za logikę nagrody dziennej.
-/// Zarządza aktualnym stanem streaka, punktami i uprawnieniami do odbioru.
-/// Obsługuje:
-/// - pobieranie danych z Firestore,
-/// - ocenę streaka i aktualizację danych,
-/// - odbieranie nagrody i synchronizację z rangą.
+/// viewmodel nagrody dziennej
+///
+/// zarządza streakiem, punktami, sprawdza czy użytkownik może odebrać nagrodę
+/// synchronizuje dane z rangą i zapisuje aktualizacje do Firestore
 class DailyRewardViewModel extends ChangeNotifier {
   final DailyRewardService _rewardService = DailyRewardService();
   final RankViewModel _rankViewModel;
@@ -23,13 +21,13 @@ class DailyRewardViewModel extends ChangeNotifier {
   String? get error => _error;
   bool get isLoading => _isLoading;
 
-  /// Zwraca aktualną długość streaka
+  /// aktualna długość streaka
   int get currentStreak => _reward?.currentStreak ?? 1;
 
-  /// Zwraca łączną liczbę zdobytych punktów
+  /// łączna liczba zdobytych punktów
   int get totalPoints => _reward?.totalPoints ?? 0;
 
-  /// Czy użytkownik może dziś odebrać nagrodę
+  /// czy można dziś odebrać nagrodę
   bool get canClaim {
     if (_reward == null) return false;
     final now = DateTime.now();
@@ -37,7 +35,7 @@ class DailyRewardViewModel extends ChangeNotifier {
     return !_isSameDate(now, last);
   }
 
-  /// Wczytuje dane nagrody dziennej z Firestore
+  /// ładuje dane nagrody dziennej z Firestore
   Future<void> loadRewardData() async {
     _isLoading = true;
     _error = null;
@@ -46,7 +44,7 @@ class DailyRewardViewModel extends ChangeNotifier {
     try {
       _reward = await _rewardService.getRewardData();
 
-      // Jeśli pierwszy raz, inicjalizujemy dane
+      // jeśli brak danych, inicjalizujemy
       if (_reward == null) {
         _reward = DailyRewardModel(
           currentStreak: 1,
@@ -54,7 +52,7 @@ class DailyRewardViewModel extends ChangeNotifier {
           totalPoints: 0,
         );
       } else {
-        // Ocena, czy streak należy zresetować
+        // sprawdzenie czy streak nie wygasł
         _reward = await _rewardService.evaluateStreak(_reward!);
       }
 
@@ -67,7 +65,7 @@ class DailyRewardViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Obsługuje odbiór nagrody dziennej i aktualizuje rangę
+  /// odbiera nagrodę dzienną i odświeża rangę
   Future<void> claimReward() async {
     _isLoading = true;
     _error = null;

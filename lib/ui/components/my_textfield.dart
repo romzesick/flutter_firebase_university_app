@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 
-/// P O L E   T E K S T O W E
-
+/// Komponent pola tekstowego do wielokrotnego użytku.
+///
+/// Wyświetla pole z obramowaniem, podpowiedzią i opcjonalnym ukrywaniem tekstu (np. dla haseł).
+/// Można przekazać własny [TextEditingController] oraz funkcję [onChanged].
+///
+/// Stylizacja dostosowana do ciemnego motywu (kolory, tło, obramowanie).
+///
+/// Używany w ekranach logowania, rejestracji i innych.
 class MyTextField extends StatelessWidget {
   /// Kontroler tekstu (opcjonalnie, jeśli potrzebna bezpośrednia kontrola)
   final TextEditingController? controller;
@@ -34,21 +40,14 @@ class MyTextField extends StatelessWidget {
         cursorColor: Colors.white,
         style: TextStyle(color: Colors.white),
         decoration: InputDecoration(
-          // Obramowanie nieaktywne
           enabledBorder: const OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white30),
           ),
-
-          // Obramowanie aktywne (gdy pole jest zaznaczone)
           focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: Colors.white30),
           ),
-
-          // Tło pola
           fillColor: Colors.grey[900],
           filled: true,
-
-          // Tekst podpowiedzi
           hintText: hintText,
           hintStyle: TextStyle(color: Colors.grey[500]),
         ),

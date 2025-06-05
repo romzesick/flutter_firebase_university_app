@@ -1,14 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+/// serwis do zarządzania znajomymi i zaproszeniami
+///
+/// obsługuje wyszukiwanie użytkowników, zapraszanie, akceptację,
+/// odrzucanie, ranking znajomych i usuwanie z listy znajomych
 class FriendService {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
 
-  /// Pobiera identyfikator aktualnie zalogowanego użytkownika
+  /// id aktualnego użytkownika
   String get currentUserId => _auth.currentUser!.uid;
 
-  /// Pobiera listę wszystkich użytkowników oprócz aktualnego
+  /// pobiera wszystkich użytkowników poza aktualnym
   Future<List<Map<String, dynamic>>> getAllUsers() async {
     try {
       final querySnapshot = await _firestore.collection('users').get();

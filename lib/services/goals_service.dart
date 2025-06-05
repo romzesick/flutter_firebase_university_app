@@ -4,21 +4,23 @@ import 'package:firebase_flutter_app/domain/models/goal_model.dart';
 import 'package:firebase_flutter_app/domain/models/goal_steps_model.dart';
 import 'package:uuid/uuid.dart';
 
-/// Serwis do zarządzania celami użytkownika (Firestore).
-/// Obsługuje CRUD dla celów i ich kroków.
+/// serwis do zarządzania celami użytkownika w Firestore
+///
+/// umożliwia tworzenie, pobieranie, aktualizowanie i usuwanie celów oraz kroków.
+/// wykorzystuje kolekcję 'goals' w dokumencie zalogowanego użytkownika.
 class GoalsService {
   final _firestore = FirebaseFirestore.instance;
   final _auth = FirebaseAuth.instance;
   final _uuid = const Uuid();
 
-  // ID aktualnie zalogowanego użytkownika
+  /// id aktualnie zalogowanego użytkownika
   String get _userId => _auth.currentUser!.uid;
 
-  // Referencja do kolekcji "goals" danego użytkownika
+  /// referencja do kolekcji "goals" użytkownika
   CollectionReference get _goalsCollection =>
       _firestore.collection('users').doc(_userId).collection('goals');
 
-  /// Dodaje nowy cel i zwraca jego ID
+  /// dodaje nowy cel i zwraca jego id
   Future<String> addGoalAndReturnId(String title) async {
     final id = _uuid.v4();
     final goal = GoalModel(

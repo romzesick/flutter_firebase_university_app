@@ -3,12 +3,9 @@ import 'package:firebase_flutter_app/view_models/goals_view_models/goals_view_mo
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-/// Strona wyświetlająca wszystkie osiągnięte cele użytkownika.
-/// Obsługuje:
-/// - ładowanie ukończonych celów (`completed = true`),
-/// - wyświetlanie listy celów,
-/// - usuwanie ukończonego celu,
-/// - pokazanie komunikatu jeśli brak danych.
+/// ekran osiągniętych celów
+///
+/// pokazuje listę ukończonych celów, umożliwia ich usuwanie i obsługuje puste stany
 class GoalsAchievedWidget extends StatefulWidget {
   const GoalsAchievedWidget({super.key});
 
@@ -21,7 +18,7 @@ class _GoalsAchievedWidgetState extends State<GoalsAchievedWidget> {
   void initState() {
     super.initState();
 
-    // Ładujemy tylko ukończone cele (completed = true)
+    /// ładowanie tylko zakończonych celów (completed = true)
     Future.microtask(() {
       context.read<GoalsViewModel>().loadGoals(completed: true);
     });
@@ -32,7 +29,7 @@ class _GoalsAchievedWidgetState extends State<GoalsAchievedWidget> {
     return Scaffold(
       backgroundColor: Colors.black,
 
-      // Górny pasek z tytułem
+      /// Górny pasek z tytułem
       appBar: AppBar(
         foregroundColor: Colors.white,
         backgroundColor: Colors.transparent,
@@ -40,17 +37,18 @@ class _GoalsAchievedWidgetState extends State<GoalsAchievedWidget> {
         title: Text('Goals achieved'),
       ),
 
-      // Główna zawartość strony
+      /// Główna zawartość strony
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: _GoalsWidget(), // Osobny widżet do listy celów
+          child: _GoalsWidget(),
         ),
       ),
     );
   }
 }
 
+/// lista osiągniętych celów
 class _GoalsWidget extends StatelessWidget {
   const _GoalsWidget();
 
@@ -61,14 +59,14 @@ class _GoalsWidget extends StatelessWidget {
     // Filtrowanie — pokazujemy tylko zakończone cele
     final achievedGoals = model.goals.where((g) => g.completed).toList();
 
-    // Pokazujemy loader jeśli trwa ładowanie
+    /// loader podczas ładowania
     if (model.isLoading) {
       return const Center(
         child: CircularProgressIndicator(color: Colors.white),
       );
     }
 
-    // Komunikat jeśli brak zakończonych celów
+    /// jeśli brak osiągniętych celów
     if (achievedGoals.isEmpty) {
       return const Center(
         child: Text(
@@ -78,7 +76,7 @@ class _GoalsWidget extends StatelessWidget {
       );
     }
 
-    // Lista zakończonych celów
+    /// lista zakończonych celów z opcją usunięcia
     return ListView.builder(
       itemCount: achievedGoals.length,
       itemBuilder: (context, index) {
@@ -91,8 +89,9 @@ class _GoalsWidget extends StatelessWidget {
             child: Container(
               height: 50,
               decoration: BoxDecoration(
-                color: Colors.white12,
-                borderRadius: BorderRadius.circular(12),
+                color: Colors.grey[900],
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: Colors.white30, width: 1),
               ),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),

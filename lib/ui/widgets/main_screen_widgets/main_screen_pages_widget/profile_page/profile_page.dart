@@ -12,13 +12,14 @@ import 'package:firebase_flutter_app/view_models/profile_view_models/ranks_view_
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-// ProfilePage
-// Ekran profilu z widżetami dotyczącymi postępu, punktów, rankingu i codziennych nagród
-
+/// ekran profilu
+///
+/// zawiera dane użytkownika, postęp czasu, średnią produktywność,
+/// codzienne nagrody, ranking i skróty do ustawień oraz osiągnięć
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
-  // Tworzy stronę profilu z wymaganymi ViewModelami
+  /// tworzy stronę profilu z wymaganymi ViewModelami
   static Widget create() {
     return MultiProvider(
       providers: [
@@ -60,7 +61,7 @@ class ProfilePage extends StatelessWidget {
   }
 }
 
-// Widżet wyświetlający dane osobowe, postęp roczny/miesięczny/dzienny oraz średnią produktywność
+/// dane użytkownika, średnia produktywność i postęp czasu
 class _PersonalInfoProgressWidgets extends StatelessWidget {
   const _PersonalInfoProgressWidgets();
 
@@ -128,7 +129,7 @@ class _PersonalInfoProgressWidgets extends StatelessWidget {
   }
 }
 
-// Przycisk przekierowujący do osiągniętych celów
+/// przycisk z przejściem do osiągniętych celów
 class _GoalsAchieved extends StatelessWidget {
   const _GoalsAchieved();
 
@@ -166,7 +167,7 @@ class _GoalsAchieved extends StatelessWidget {
   }
 }
 
-// Przycisk otwierający ustawienia
+/// Przycisk otwierający ustawienia
 class _SettingsWidget extends StatelessWidget {
   const _SettingsWidget();
 
@@ -198,7 +199,7 @@ class _SettingsWidget extends StatelessWidget {
   }
 }
 
-// Przycisk otwierający popup z codzienną nagrodą
+/// Przycisk otwierający popup z codzienną nagrodą
 class _DailyRewardWidget extends StatelessWidget {
   const _DailyRewardWidget();
 
@@ -232,7 +233,7 @@ class _DailyRewardWidget extends StatelessWidget {
   }
 }
 
-// Widżet z punktami, rangą i przyciskiem do listy rang
+/// wynik użytkownika: punkty, ranga, przycisk do przeglądu rang
 class _ScoreWidget extends StatelessWidget {
   const _ScoreWidget();
 

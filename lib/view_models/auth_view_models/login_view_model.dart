@@ -3,7 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_flutter_app/services/auth_service.dart';
 
-/// Klasa opakowująca dane, które powinny być użyte tylko raz (np. komunikaty o błędach)
+/// Klasa opakowująca dane typu T.
+/// Służy do jednorazowego odczytu wartości (np. wiadomości o błędach),
+/// aby uniknąć wielokrotnego wyświetlania tego samego komunikatu.
 class Event<T> {
   final T _data;
   bool _hasBeenHandled = false;
@@ -24,7 +26,8 @@ class Event<T> {
   T get peekData => _data;
 }
 
-/// Klasa reprezentująca stan logowania
+/// Reprezentuje stan ViewModelu logowania.
+/// Przechowuje dane wejściowe oraz flagi stanu.
 class _LoginViewModelState {
   final String login;
   final String password;
@@ -54,15 +57,27 @@ class _LoginViewModelState {
   }
 }
 
-/// ViewModel odpowiedzialny za logikę logowania
+/// ViewModel odpowiedzialny za logikę logowania użytkownika.
+///
+/// Używany w `LoginPage`. Zarządza:
+/// - stanem pól e-mail i hasła,
+/// - wyświetlaniem błędów,
+/// - aktualnym statusem ładowania,
+/// - komunikacją z Firebase przez [AuthService].
 class LoginViewModel extends ChangeNotifier {
   final AuthService _authService = AuthService();
   var _state = const _LoginViewModelState();
+
+  /// Aktualny stan ViewModelu
   _LoginViewModelState get state => _state;
 
-  // Gettery skracające dostęp do danych
+  /// Getter dla loginu (oczyszczony z białych znaków)
   String get login => _state.login.trim();
+
+  /// Getter dla hasła (oczyszczony z białych znaków)
   String get password => _state.password.trim();
+
+  /// Czy trwa operacja logowania
   bool get isLoading => _state.isLoading;
 
   /// Aktualizuje pole loginu
@@ -79,7 +94,8 @@ class LoginViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Metoda wywoływana po naciśnięciu przycisku logowania
+  /// Obsługuje naciśnięcie przycisku logowania.
+  /// Waliduje dane i wywołuje logikę z [AuthService].
   Future<void> onSignInButtonPressed() async {
     if (login.isEmpty || password.isEmpty) {
       _emitErrorMessage('The fields are empty');
@@ -89,11 +105,10 @@ class LoginViewModel extends ChangeNotifier {
     _setLoading(true);
 
     try {
-      // Próba logowania
+      /// Próba zalogowania użytkownika za pomocą Firebase
       await _authService.signIn(login, password);
       _setLoading(false);
     } on FirebaseAuthException catch (e) {
-      // Obsługa błędów Firebase
       if (e.code == 'user-not-found') {
         _emitErrorMessage('User not found with this email.');
       } else if (e.code == 'wrong-password') {
@@ -102,21 +117,20 @@ class LoginViewModel extends ChangeNotifier {
         _emitErrorMessage('Auth error: ${e.message}');
       }
     } catch (e) {
-      // Obsługa nieoczekiwanych błędów
       _emitErrorMessage('Unexpected error: $e');
     }
 
     _setLoading(false);
   }
 
-  /// Ustawia stan ładowania
+  /// Ustawia flagę ładowania i odświeża UI
   void _setLoading(bool isLoading) {
     if (!hasListeners) return;
     _state = _state.copyWith(isLoading: isLoading);
     notifyListeners();
   }
 
-  /// Emituje komunikat o błędzie
+  /// Emituje nowy komunikat o błędzie do UI
   void _emitErrorMessage(String message) {
     if (!hasListeners) return;
     _state = _state.copyWith(errorMessage: Event(message));

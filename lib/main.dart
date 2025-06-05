@@ -7,6 +7,10 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+/// Główna funkcja uruchamiająca aplikację.
+///
+/// Inicjalizuje Firebase, rejestruje obsługę powiadomień,
+/// a następnie uruchamia aplikację Flutter z odpowiednimi Providerami.
 void main() async {
   // Inicjalizacja Fluttera przed użyciem Firebase
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,7 +44,10 @@ void main() async {
   );
 }
 
-// Funkcja obsługująca wiadomości push w tle
+/// Funkcja obsługująca powiadomienia push, gdy aplikacja jest w tle lub zamknięta.
+///
+/// Firebase wymaga osobnej obsługi dla wiadomości w tle w osobnym izolacie.
+/// Użycie adnotacji `@pragma('vm:entry-point')` zapobiega usunięciu tej funkcji podczas kompilacji.
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();

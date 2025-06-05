@@ -3,21 +3,20 @@ import 'package:firebase_flutter_app/view_models/profile_view_models/ranks_view_
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-/// Popup do systemu codziennych nagród (Daily Reward).
-/// Zawiera:
-/// - wyświetlanie listy 7-dniowego cyklu nagród,
-/// - obsługę stanu dziennego streaku i punktów,
-/// - przycisk odbioru nagrody danego dnia,
+/// popup z nagrodą dzienną
+///
+/// zawiera 7-dniowy cykl nagród, status każdego dnia oraz logikę odbioru punktów
 class DailyRewardPopup extends StatelessWidget {
   final RankViewModel rankViewModel;
 
   const DailyRewardPopup({super.key, required this.rankViewModel});
 
+  /// lista nagród w zależności od dnia streaka
   static final List<int> rewards = [10, 20, 40, 60, 80, 110, 150];
 
   @override
   Widget build(BuildContext context) {
-    // Używamy Provider do stworzenia i udostępnienia DailyRewardViewModel
+    // podłączenie viewmodelu z automatycznym załadowaniem danych
     return ChangeNotifierProvider(
       create: (_) => DailyRewardViewModel(rankViewModel)..loadRewardData(),
       child: const _RewardContent(),
@@ -25,6 +24,7 @@ class DailyRewardPopup extends StatelessWidget {
   }
 }
 
+/// zawartość popupu z listą dni i przyciskiem zamknięcia
 class _RewardContent extends StatelessWidget {
   const _RewardContent();
 

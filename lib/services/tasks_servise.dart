@@ -145,7 +145,7 @@ class DayService {
     await addTaskToDay(tomorrow, task);
   }
 
-  /// Pobierz wszystkie dni użytkownika
+  /// Pobierz wszystkie dni użytkownikaa
   Future<List<DayModel>> fetchAllUserDays() async {
     final snapshot =
         await FirebaseFirestore.instance

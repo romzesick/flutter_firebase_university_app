@@ -3,11 +3,15 @@ import 'package:firebase_flutter_app/view_models/auth_view_models/reset_password
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-/// Strona do resetowania hasła – użytkownik podaje email, aby otrzymać link
+/// Główna strona resetowania hasła.
+///
+/// Umożliwia użytkownikowi wpisanie adresu e-mail,
+/// aby otrzymać link do zresetowania hasła.
+/// Logika resetowania znajduje się w [ResetPasswordViewModel].
 class ForgotPasswordPage extends StatelessWidget {
   const ForgotPasswordPage({super.key});
 
-  /// Tworzy stronę z powiązanym modelem ResetPasswordViewModel
+  /// Metoda fabryczna do stworzenia strony z [ResetPasswordViewModel].
   static Widget create() {
     return ChangeNotifierProvider(
       create: (_) => ResetPasswordViewModel(),
@@ -31,11 +35,11 @@ class ForgotPasswordPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  // Ikona wiadomości e-mail
+                  /// Ikona wiadomości e-mail
                   Icon(Icons.email, size: 100, color: Colors.green),
                   const SizedBox(height: 50),
 
-                  // Instrukcja dla użytkownika
+                  /// Instrukcja dla użytkownika
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25.0),
                     child: Text(
@@ -47,12 +51,12 @@ class ForgotPasswordPage extends StatelessWidget {
 
                   SizedBox(height: 20),
 
-                  // Pole do wpisania e-maila
+                  /// Pole do wpisania e-maila
                   const _ResetTextField(),
 
                   SizedBox(height: 20),
 
-                  // Przycisk do zresetowania hasła
+                  /// Przycisk do zresetowania hasła
                   const _ResetButton(),
                 ],
               ),
@@ -60,7 +64,7 @@ class ForgotPasswordPage extends StatelessWidget {
           ),
         ),
 
-        // Obsługa komunikatów o błędach i sukcesie
+        /// Obsługa komunikatów o błędach i sukcesie
         _ErrorHandler(),
       ],
     );
@@ -81,7 +85,10 @@ class _ResetTextField extends StatelessWidget {
   }
 }
 
-/// Przycisk wysyłający żądanie resetu hasła
+/// Przycisk wykonujący operację resetowania hasła.
+///
+/// Pokazuje spinner w czasie oczekiwania.
+/// W przypadku sukcesu wraca na poprzedni ekran.
 class _ResetButton extends StatelessWidget {
   const _ResetButton();
 
@@ -99,14 +106,10 @@ class _ResetButton extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
       child: GestureDetector(
         onTap: () async {
-          // Ukrycie klawiatury
           FocusScope.of(context).unfocus();
-
-          // Próba resetu hasła
           final success =
               await context.read<ResetPasswordViewModel>().resetPassword();
 
-          // Powrót na poprzednią stronę po sukcesie
           if (success && context.mounted) {
             Navigator.pop(context);
           }

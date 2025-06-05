@@ -1,10 +1,14 @@
 import 'package:firebase_flutter_app/domain/models/task_model.dart';
 
+/// Model reprezentujący dane jednego dnia.
+///
+/// Zawiera: datę, listę zadań [TaskModel], opcjonalną notatkę
+/// oraz wartość produktywności (procent wykonania zadań).
 class DayModel {
-  final DateTime date;
-  final List<TaskModel> tasks;
-  final String? note;
-  final double progress;
+  final DateTime date; // Data (dzień)
+  final List<TaskModel> tasks; // Lista zadań przypisanych do tego dnia
+  final String? note; // Opcjonalna notatka tekstowa
+  final double progress; // Procent wykonania zadań (0.0–1.0)
 
   DayModel({
     required this.date,
@@ -13,6 +17,7 @@ class DayModel {
     this.progress = 0.0,
   });
 
+  /// Tworzy instancję modelu na podstawie mapy JSON
   factory DayModel.fromJson(Map<String, dynamic> json) {
     return DayModel(
       date: DateTime.parse(json['date'] as String),
@@ -25,6 +30,7 @@ class DayModel {
     );
   }
 
+  /// Konwertuje model do formatu JSON
   Map<String, dynamic> toJson() {
     return {
       'date': date.toIso8601String(),
@@ -34,6 +40,7 @@ class DayModel {
     };
   }
 
+  /// Zwraca kopię modelu z możliwością zmiany pól
   DayModel copyWith({
     DateTime? date,
     List<TaskModel>? tasks,

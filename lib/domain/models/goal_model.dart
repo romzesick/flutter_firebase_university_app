@@ -1,11 +1,15 @@
 import 'package:firebase_flutter_app/domain/models/goal_steps_model.dart';
 
+/// Model celu długoterminowego użytkownika.
+///
+/// Zawiera identyfikator, tytuł celu, postęp (0.0–1.0),
+/// listę kroków do osiągnięcia celu oraz status ukończenia.
 class GoalModel {
-  final String id;
-  final String title;
-  final double progress;
-  final List<GoalStepModel> steps;
-  final bool completed;
+  final String id; // Unikalny identyfikator celu
+  final String title; // Nazwa lub opis celu
+  final double progress; // Postęp celu (0.0–1.0)
+  final List<GoalStepModel> steps; // Lista kroków prowadzących do celu
+  final bool completed; // Czy cel został ukończony
 
   GoalModel({
     required this.id,
@@ -15,6 +19,7 @@ class GoalModel {
     required this.completed,
   });
 
+  /// Tworzy model na podstawie danych z JSON (np. z Firestore)
   factory GoalModel.fromJson(Map<String, dynamic> json) {
     return GoalModel(
       id: json['id'] ?? '',
@@ -28,6 +33,7 @@ class GoalModel {
     );
   }
 
+  /// Konwertuje model do formatu JSON
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -38,6 +44,7 @@ class GoalModel {
     };
   }
 
+  /// Zwraca kopię modelu z możliwością nadpisania pól
   GoalModel copyWith({
     String? title,
     double? progress,

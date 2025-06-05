@@ -5,6 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_flutter_app/services/stats_service.dart';
 
+/// viewmodel profilu użytkownika
+///
+/// pobiera dane użytkownika, średnią produktywność oraz progres dnia, miesiąca i roku
+/// automatycznie odświeża progres czasu co minutę
 class ProfileViewModel extends ChangeNotifier {
   final _auth = FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
@@ -25,6 +29,7 @@ class ProfileViewModel extends ChangeNotifier {
   double get averageProductivity => _averageProductivity;
   bool get isLoading => _isLoading;
 
+  /// ładuje dane profilu (nazwa, produktywność, progres czasu)
   Future<void> loadProfileData() async {
     _isLoading = true;
     notifyListeners();
@@ -49,6 +54,7 @@ class ProfileViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// oblicza progres dnia, miesiąca i roku
   void _calculateTimeProgresses() {
     final now = DateTime.now();
 
@@ -71,6 +77,7 @@ class ProfileViewModel extends ChangeNotifier {
         dayEnd.difference(dayStart).inSeconds;
   }
 
+  /// uruchamia timer do automatycznego odświeżania czasu
   void _startTimer() {
     _timer?.cancel();
     _timer = Timer.periodic(Duration(seconds: 60), (_) {

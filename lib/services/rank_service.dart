@@ -74,7 +74,7 @@ class RankService {
     }, SetOptions(merge: true));
   }
 
-  /// Pobiera całkowitą liczbę punktów użytkownika
+  ///  Pobiera całkowitą liczbę punktów użytkownika
   Future<int> getUserTotalPoints() async {
     final user = _auth.currentUser;
     if (user == null) return 0;

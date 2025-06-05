@@ -16,6 +16,7 @@ class _AddTaskViewModelState {
     this.error,
   });
 
+  /// Tworzy kopię obecnego stanu z możliwością nadpisania wybranych pól
   _AddTaskViewModelState copyWith({
     String? text,
     bool? isLoading,
@@ -30,16 +31,17 @@ class _AddTaskViewModelState {
 }
 
 /// ViewModel do dodawania i edytowania zadania.
-/// Obsługuje: inicjalizację z istniejącym zadaniem, zapis, walidację i błędy.
+/// Współpracuje z [DayTasksViewModel] do zapisu zmian w dniu.
 class AddTaskViewModel extends ChangeNotifier {
   _AddTaskViewModelState _state = const _AddTaskViewModelState();
   _AddTaskViewModelState get state => _state;
 
+  /// Gettery upraszczające dostęp do stanu
   String get text => _state.text;
   bool get isLoading => _state.isLoading;
   String? get error => _state.error;
 
-  TaskModel? _editingTask; // <-- zadanie do edycji (jeśli istnieje)
+  TaskModel? _editingTask;
 
   /// Inicjalizacja ViewModelu (jeśli przekazano istniejące zadanie — tryb edycji)
   void init(TaskModel? task) {
@@ -86,13 +88,13 @@ class AddTaskViewModel extends ChangeNotifier {
     _setLoading(false);
   }
 
-  /// Ustawia status ładowania
+  /// Ustawia flagę ładowania i odświeża UI
   void _setLoading(bool value) {
     _state = _state.copyWith(isLoading: value);
     notifyListeners();
   }
 
-  /// Ustawia błąd do wyświetlenia
+  /// Emituje nowy komunikat o błędzie do UI
   void _setError(String message) {
     _state = _state.copyWith(error: message);
     notifyListeners();

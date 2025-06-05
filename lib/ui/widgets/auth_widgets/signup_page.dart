@@ -5,11 +5,12 @@ import 'package:provider/provider.dart';
 import '../../components/my_login_button.dart';
 import '../../components/my_textfield.dart';
 
-/// Strona rejestracji – tworzenie nowego konta użytkownika
+/// Strona rejestracji – formularz tworzenia nowego konta użytkownika.
+/// Obsługuje wprowadzanie danych oraz przekazuje je do [SignUpViewModel].
 class SignupPage extends StatelessWidget {
   const SignupPage({super.key});
 
-  /// Tworzy stronę z odpowiednim modelem widoku (ViewModel)
+  /// Metoda fabryczna do stworzenia strony rejestracji z dostarczonym [SignUpViewModel].
   static Widget create() {
     return ChangeNotifierProvider(
       create: (context) => SignUpViewModel(),
@@ -31,7 +32,7 @@ class SignupPage extends StatelessWidget {
                   children: [
                     const SizedBox(height: 50),
 
-                    // Ikona i nagłówek
+                    /// Ikona i nagłówek
                     Icon(Icons.lock, size: 100, color: Colors.green),
                     const SizedBox(height: 50),
                     Text(
@@ -40,7 +41,7 @@ class SignupPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 25),
 
-                    // Pola formularza
+                    /// Pola formularza
                     _NameField(),
                     const SizedBox(height: 10),
 
@@ -56,11 +57,11 @@ class SignupPage extends StatelessWidget {
                     _ConfirmPasswordField(),
                     const SizedBox(height: 25),
 
-                    // Przycisk rejestracji
+                    /// Przycisk rejestracji
                     const SignupButton(),
                     const SizedBox(height: 10),
 
-                    // Przejście do logowania
+                    /// Przejście do logowania
                     _LoginInstead(),
                     const SizedBox(height: 50),
                   ],
@@ -70,7 +71,7 @@ class SignupPage extends StatelessWidget {
           ),
         ),
 
-        // Obsługa błędów
+        /// Obsługa błędów
         _ErrorHandler(),
       ],
     );

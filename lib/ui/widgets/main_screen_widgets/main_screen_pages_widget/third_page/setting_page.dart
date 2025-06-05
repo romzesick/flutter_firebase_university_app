@@ -1,16 +1,6 @@
 import 'package:flutter/material.dart';
 
-/*
-
-S E T T I N G P A G E
-
-This is the SettingPage.
-Currently it is just showing a vertical list of boxes.
-
-This is where you should have a list of options for the user to control
-depending on what your app does.
-
-*/
+/// Nie potrzebuje tej strony, ale jak coś to skorzystam
 
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});

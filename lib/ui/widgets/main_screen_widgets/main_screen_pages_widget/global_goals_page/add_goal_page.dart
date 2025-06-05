@@ -32,7 +32,7 @@ class _CreateGoalPageState extends State<CreateGoalPage> {
     super.dispose();
   }
 
-  /// Obsługa naciśnięcia "Next"
+  /// zapisuje nowy cel i przechodzi do strony dodawania kroków
   Future<void> _handleNext() async {
     final title = _controller.text.trim();
     if (title.isEmpty) {
@@ -49,7 +49,7 @@ class _CreateGoalPageState extends State<CreateGoalPage> {
 
     GoalModel? createdGoal;
 
-    // Czekamy aż nowy cel pojawi się w modelu (max 5s)
+    // czekamy maks. 5s aż cel pojawi się w modelu
     for (int i = 0; i < 50; i++) {
       await Future.delayed(const Duration(milliseconds: 100));
       if (!mounted) return;

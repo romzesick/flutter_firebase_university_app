@@ -31,7 +31,7 @@ class FriendRequestsPage extends StatelessWidget {
         ),
         body: Consumer<FriendRequestsViewModel>(
           builder: (context, viewModel, child) {
-            // Loader podczas pobierania danych
+            /// Loader podczas pobierania danych
             if (viewModel.isLoading) {
               return const Center(
                 child: CircularProgressIndicator(color: Colors.white),
@@ -48,7 +48,7 @@ class FriendRequestsPage extends StatelessWidget {
               );
             }
 
-            // Lista zaproszeń
+            /// Lista zaproszeń
             return Padding(
               padding: const EdgeInsets.all(16.0),
               child: ListView.builder(

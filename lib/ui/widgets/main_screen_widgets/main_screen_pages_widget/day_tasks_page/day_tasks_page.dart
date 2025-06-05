@@ -13,16 +13,22 @@ import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
+/// Strona główna z zadaniami dziennymi.
 ///
-/// S T R O N A   Z A D A Ń   D Z I E N N Y C H
+/// Wyświetla zadania przypisane do wybranego dnia oraz ogólną produktywność.
+/// Pozwala użytkownikowi:
+/// – przeglądać i wybierać daty (kalendarz dolny i pełny),
+/// – dodawać, edytować i usuwać zadania,
+/// – dodawać notatkę do dnia,
+/// – śledzić postęp dnia i średnią produktywność,
+/// – przejść do widoku statystyk i notatek.
 ///
-/// Ekran wyświetlający zadania na dany dzień, postęp dnia i ogólną produktywność.
-/// Pozwala dodawać notatki, zadania, edytować je, usuwać oraz przesuwać na jutro.
-///
+/// Logika obsługi dat, zadań i widoczności kalendarza znajduje się w [DayTasksViewModel].
 
 class MainTasksPage extends StatelessWidget {
   const MainTasksPage({super.key});
 
+  /// Metoda fabryczna do stworzenia strony [_MainTasksPageContent] z dostarczonym [DayTasksViewModel].
   static Widget create() {
     return ChangeNotifierProvider(
       create: (_) => DayTasksViewModel()..loadDay(DateTime.now()),
@@ -34,6 +40,10 @@ class MainTasksPage extends StatelessWidget {
   Widget build(BuildContext context) => create();
 }
 
+/// Główna zawartość strony z zadaniami.
+///
+/// Zarządza stanem daty, widocznością kalendarza i przewijaniem.
+/// Inicjuje widok [_CalendarSelector] i przekazuje dane z [DayTasksViewModel].
 class _MainTasksPageContent extends StatefulWidget {
   const _MainTasksPageContent();
 
@@ -49,6 +59,7 @@ class _MainTasksPageContentState extends State<_MainTasksPageContent> {
   @override
   void initState() {
     super.initState();
+    // automatyczne przewinięcie do aktualnie wybranej daty po załadowaniu
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollToSelectedDate(context.read<DayTasksViewModel>().selectedDate);
     });
@@ -84,15 +95,20 @@ class _MainTasksPageContentState extends State<_MainTasksPageContent> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                /// nagłówek z datą i przyciskami
                 _DateWidget(),
 
+                /// widżet postępu
                 _ProgressWidget(),
 
+                /// lista zadań
                 _TasksWidget(),
 
                 const SizedBox(height: 100),
               ],
             ),
+
+            /// Calendarz
             _CalendarSelector(
               scrollController: _dateScrollController,
               showFullCalendar: _showFullCalendar,
@@ -110,7 +126,7 @@ class _MainTasksPageContentState extends State<_MainTasksPageContent> {
   }
 }
 
-/// Nagłówek z datą i przyciskiem statystyk
+/// Nagłówek z datą, przyciskiem notatek i statystyk
 class _DateWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -159,7 +175,12 @@ class _DateWidget extends StatelessWidget {
   }
 }
 
-/// Sekcja z postępem dnia, średnią produktywnością i przyciskami
+/// Sekcja z postępem dnia.
+///
+/// Zawiera:
+/// - postęp aktualnego dnia,
+/// - średnią produktywność,
+/// - przyciski dodania notatki i zadania.
 class _ProgressWidget extends StatelessWidget {
   const _ProgressWidget();
   @override
@@ -265,7 +286,7 @@ class _AddNoteButtonWidget extends StatelessWidget {
           MaterialPageRoute(builder: (_) => AddNotePage.create(selectedDate)),
         );
 
-        /// После возврата обновляем состояние
+        // После возврата обновляем состояние
         await context.read<DayTasksViewModel>().loadDay(selectedDate);
       },
       style: ElevatedButton.styleFrom(
