@@ -12,31 +12,32 @@ A modern productivity tracking app built with Flutter and Firebase. Designed to 
 ## 🚀 Features
 
 ### 📅 Tasks & Notes
-- Add, edit, complete, and delete daily tasks with intuitive UI
-- Transfer tasks to the next day when not completed
-- Attach personal notes to any day, and view/edit/delete/filter them easily
-- Interactive calendar with swipe and tap gestures
+- Add, edit, complete, and delete daily tasks through an intuitive user interface
+- Carry over incomplete tasks to the next day
+- Attach personal notes to any day with the ability to view, edit, delete, and filter them (works like a digital journal)
+- Interactive calendar with swipe and tap gesture support
 
-### 📊 Productivity & Stats
-- Track your **daily** and **average** productivity based on task completion
-- Visualize progress with **dynamic charts** (daily, weekly, monthly)
-- Realtime productivity updates and summaries
+### 📊 Productivity & Statistics
+- Track daily and average productivity based on task completion
+- Visualize progress using dynamic charts (daily, weekly, monthly)
+- Real-time updates of productivity data and progress
+- Time progress widgets showing how much of the day, month, and year has already passed
 
 ### 🎯 Goals & Achievements
-- Define long-term goals split into smaller steps
-- Mark steps as completed to auto-track goal progress
-- Earn points and unlock achievements based on consistency
-- Level up through a rank system tied to performance
+- Set long-term goals divided into smaller steps
+- Mark steps as completed with automatic goal progress tracking
+- Earn points for consistent activity
+- Progress through a rank system based on the total number of earned points
 
 ### 👥 Social Features
-- Add friends via email and manage friend requests
-- View friends’ productivity and ranks
-- Compete on a **ranking leaderboard** with your friends
+- Search and add friends by email, manage friend requests, and remove users from your friends list
+- View your friends’ productivity levels
+- Compete with friends on the global ranking leaderboard
 
 ### 🔐 Account Management
-- Secure sign up, log in, and password reset via Firebase
-- Push notifications for daily motivation and task reminders
-- Settings panel to manage notifications, logout, or delete account
+- Secure registration, login, and password recovery via Firebase Authentication
+- Push notifications for task reminders and motivational messages
+- Settings panel for managing notifications, logging out, or deleting the account
 
 ---
 
