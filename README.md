@@ -116,6 +116,5 @@ If you fork the project and want to use Firebase:
 
 **Roman Harbatski**  
 [GitHub](https://github.com/romzesick)
-Feel free to open issues or suggest improvements!
 
 ---
