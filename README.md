@@ -48,6 +48,7 @@ A modern productivity tracking app built with Flutter and Firebase. Designed to 
 * Cloud Firestore: Real-time data storage
 * Firebase Messaging: Push notifications
 * Provider: State management
+* MVVM Architecture – Clean separation of UI, logic, and services
 
 ---
 
@@ -86,8 +87,8 @@ Watch the full video of my App on Youtube.
 
 ```bash
 # Clone the repo
-git clone https://github.com/your_username/your_repo_name.git
-cd your_repo_name
+git clone https://github.com/romzesick/flutter_firebase_university_app.git
+cd flutter_firebase_university_app
 
 # Install dependencies
 flutter pub get
