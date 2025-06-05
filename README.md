@@ -71,12 +71,12 @@ A modern productivity tracking app built with Flutter and Firebase. Designed to 
 | [▶️ Watch](assets/videos/authentication.MOV) | [▶️ Watch](assets/videos/daily_tasks.MOV) | [▶️ Watch](assets/videos/global_goals.MOV) | [▶️ Watch](assets/videos/profile.MOV) |
 > Note: Video playback depends on browser support for `.MOV` files. If video doesn't play, right-click and choose **Download**.
 
-
 ---
 
 ## 🎥 Video of Productivity Tracker App
 
 Watch the full video of my App on Youtube.
+
 [![Watch the full video of my App on Youtube](https://img.youtube.com/vi/WLHnAG0ZQ2U/0.jpg)](https://www.youtube.com/watch?v=WLHnAG0ZQ2U)
 
 
