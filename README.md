@@ -53,11 +53,14 @@ A modern productivity tracking app built with Flutter and Firebase. Designed to 
 
 ## 📂 Folder Structure
 
-├── ui/ # UI widgets and pages
-├── view_models/ # State management (Provider-based)
-├── services/ # Firebase-related logic
-├── domain/models/ # Data models
-└── main.dart # Entry point
+```
+├── ui/               # UI widgets and pages
+├── view_models/      # State management (Provider-based)
+├── services/         # Firebase-related logic
+├── domain/models/    # Data models
+└── main.dart         # Entry point
+```
+
 
 ---
 
@@ -66,6 +69,8 @@ A modern productivity tracking app built with Flutter and Firebase. Designed to 
 | Authentication                               | Daily Tasks                               | Global Goals                               | Profile                               |
 | -------------------------------------------- | ----------------------------------------- | ------------------------------------------ | ------------------------------------- |
 | [▶️ Watch](assets/videos/authentication.MOV) | [▶️ Watch](assets/videos/daily_tasks.MOV) | [▶️ Watch](assets/videos/global_goals.MOV) | [▶️ Watch](assets/videos/profile.MOV) |
+> Note: Video playback depends on browser support for `.MOV` files. If video doesn't play, right-click and choose **Download**.
+
 
 ---
 
