@@ -3,21 +3,40 @@
 ![Flutter](https://img.shields.io/badge/Flutter-3.19-blue?logo=flutter)
 ![Firebase](https://img.shields.io/badge/Firebase-integrated-yellow?logo=firebase)
 ![Provider](https://img.shields.io/badge/State%20Management-Provider-green)
+![MVVM](https://img.shields.io/badge/Architecture-MVVM-informational)
 
-A sleek, feature-rich productivity tracking application built with Flutter and powered by Firebase. Users can create daily and global goals, track their task completion progress, earn achievements, view statistics, and stay motivated.
+A modern productivity tracking app built with Flutter and Firebase. Designed to help users build better habits through daily tasks, long-term goals, stats, and social motivation.
 
 ---
 
 ## 🚀 Features
 
-* 📆 Daily Tasks: Add, complete, delete and transfer tasks between days. Add your notes to the days
-* 📆 Daily and Average Productivity: By completing daily tasks you raise your daily and average productivity
-* 📅 Interactive Calendar: Swipe and tap to manage your productivity easily
-* 📊 Stats Page: Visualize daily/weekly/monthly productivity with dynamic charts
-* 🧠 Global Goals: Define long-term objectives broken into steps
-* 🏆 Achievements & Points: Earn rewards for consistency and performance to upgrade your rank
-* 🔔 Push Notifications: Get reminders to stay on track
-* 👥 Friends System: Add friends, view their progress, and compete in rankings
+### 📅 Tasks & Notes
+- Add, edit, complete, and delete daily tasks with intuitive UI
+- Transfer tasks to the next day when not completed
+- Attach personal notes to any day, and view/edit/delete/filter them easily
+- Interactive calendar with swipe and tap gestures
+
+### 📊 Productivity & Stats
+- Track your **daily** and **average** productivity based on task completion
+- Visualize progress with **dynamic charts** (daily, weekly, monthly)
+- Realtime productivity updates and summaries
+
+### 🎯 Goals & Achievements
+- Define long-term goals split into smaller steps
+- Mark steps as completed to auto-track goal progress
+- Earn points and unlock achievements based on consistency
+- Level up through a rank system tied to performance
+
+### 👥 Social Features
+- Add friends via email and manage friend requests
+- View friends’ productivity and ranks
+- Compete on a **ranking leaderboard** with your friends
+
+### 🔐 Account Management
+- Secure sign up, log in, and password reset via Firebase
+- Push notifications for daily motivation and task reminders
+- Settings panel to manage notifications, logout, or delete account
 
 ---
 
@@ -32,15 +51,33 @@ A sleek, feature-rich productivity tracking application built with Flutter and p
 
 ---
 
-## 🎥 Video of my app
+## 📂 Folder Structure
 
-Watch the video, Creating account, resetting password and some more features were skipped not to take too much time
-
-[![Watch the video, Creating account, resetting password and some more features were skipped not to take too much time](https://img.youtube.com/vi/NtxZy95QCc4/0.jpg)](https://www.youtube.com/watch?v=NtxZy95QCc4)
+├── ui/ # UI widgets and pages
+├── view_models/ # State management (Provider-based)
+├── services/ # Firebase-related logic
+├── domain/models/ # Data models
+└── main.dart # Entry point
 
 ---
 
-## 📥 Installation
+## 📹 Video Previews
+
+| Authentication                               | Daily Tasks                               | Global Goals                               | Profile                               |
+| -------------------------------------------- | ----------------------------------------- | ------------------------------------------ | ------------------------------------- |
+| [▶️ Watch](assets/videos/authentication.MOV) | [▶️ Watch](assets/videos/daily_tasks.MOV) | [▶️ Watch](assets/videos/global_goals.MOV) | [▶️ Watch](assets/videos/profile.MOV) |
+
+---
+
+## 🎥 Video of Productivity Tracker App
+
+Watch the full video of my App on Youtube.
+[![Watch the full video of my App on Youtube](https://img.youtube.com/vi/WLHnAG0ZQ2U/0.jpg)](https://www.youtube.com/watch?v=WLHnAG0ZQ2U)
+
+
+---
+
+## 🚀 Getting Started
 
 ```bash
 # Clone the repo
@@ -66,5 +103,13 @@ If you fork the project and want to use Firebase:
 2. Enable Email/Password authentication
 3. Add your `google-services.json` and `GoogleService-Info.plist` to the appropriate directories
 4. Use `flutterfire configure` if preferred
+
+---
+
+## 👨‍💻 Author
+
+**Roman Harbatski**  
+[GitHub](https://github.com/romzesick)
+Feel free to open issues or suggest improvements!
 
 ---
